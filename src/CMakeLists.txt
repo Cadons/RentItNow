@@ -26,6 +26,10 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(RentItNow
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        model/car.h model/car.cpp
+        model/user.h model/user.cpp
+
+
 
 
 
