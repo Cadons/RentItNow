@@ -2,8 +2,10 @@
 #define CAR_H
 
 #include "cartype.h"
+#include "location.h"
 #include <stdlib.h>
 #include <string>
+
 using namespace std;
 class Car
 {
@@ -25,6 +27,14 @@ public:
     bool updateDistanceTraveled(int km);
     int getKmBeforeService() const;
     Car resetKm();
+    bool operator ==(const Car& other)const;
+    string toString();
+    float getTotalKm() const;
+
+    Location getLocation() const;
+    void setLocation(const Location &newLocation);
+    void setTotalKm(float newTotalKm);
+
 
 private:
     string name="";
@@ -32,6 +42,8 @@ private:
     string licensePlate="";
     int kmBeforeService=1500;
     const CarType type;
+    Location location;
+    float totalKm=0;
 
 
 

@@ -47,3 +47,13 @@ TEST(RentItNowTest_CAR,DELUXE_CAR)
     EXPECT_EQ(50,myCar.getSpeed());
 
 }
+TEST(RentItNowTest_CAR,TEST_EQ_OPERATOR)
+{
+    DeluxeCar myCar("testCar", "testBrand","ABC1234");
+    DeluxeCar myCar2("testCar", "testBrand","ABC1234");
+    DeluxeCar myCar3("testCarw", "testBrand","ABC123e4");
+
+    EXPECT_EQ(myCar,myCar2);
+    EXPECT_FALSE(myCar3==myCar2);
+
+}
