@@ -15,6 +15,9 @@ public:
     RentItNowMainWindow(QWidget *parent = nullptr);
     ~RentItNowMainWindow();
 
+private slots:
+    void on_actionCar_Managment_triggered();
+
 private:
     Ui::RentItNowMainWindow *ui;
 };

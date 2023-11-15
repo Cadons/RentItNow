@@ -13,9 +13,70 @@
   <property name="windowTitle">
    <string>RentItNowMainWindow</string>
   </property>
-  <widget class="QWidget" name="centralwidget"/>
-  <widget class="QMenuBar" name="menubar"/>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QWidget" name="verticalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>781</width>
+      <height>551</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetDefaultConstraint</enum>
+     </property>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuRentItNow">
+    <property name="title">
+     <string>RentItNow</string>
+    </property>
+    <addaction name="actionI_m_Boss"/>
+    <addaction name="actionI_m_User"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <addaction name="actionCar_Managment"/>
+    <addaction name="actionUserManagment"/>
+   </widget>
+   <addaction name="menuRentItNow"/>
+   <addaction name="menuView"/>
+  </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionCar_Managment">
+   <property name="text">
+    <string>Car Managment</string>
+   </property>
+  </action>
+  <action name="actionUserManagment">
+   <property name="text">
+    <string>UserManagment</string>
+   </property>
+  </action>
+  <action name="actionI_m_Boss">
+   <property name="text">
+    <string>I'm Boss</string>
+   </property>
+  </action>
+  <action name="actionI_m_User">
+   <property name="text">
+    <string>I'm User</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
