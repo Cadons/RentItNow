@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(Boss LANGUAGES CXX)
+project(RentItNowTest LANGUAGES CXX)
 
 enable_testing()
 
@@ -39,7 +39,14 @@ endif()
 include_directories(${GTestIncludes} ${CMAKE_CURRENT_SOURCE_DIR}/../src/)
 
 
-add_executable(Boss main.cpp tst_boss.cpp ${GTestFiles} )
-add_test(NAME Boss COMMAND Boss)
-target_link_libraries(Boss PRIVATE Threads::Threads)
+add_executable(RentItNowTest main.cpp car_test.cpp ${GTestFiles}
+    car_manager_test.cpp)
+
+file(GLOB MODEL_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/../src/model/*.cpp)
+target_sources(RentItNowTest PRIVATE ${MODEL_SOURCES})
+file(GLOB SERVICE_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/../src/service/*.cpp)
+target_sources(RentItNowTest PRIVATE ${SERVICE_SOURCES})
+
+add_test(NAME RentItNowTest COMMAND RentItNowTest)
+target_link_libraries(RentItNowTest PRIVATE Threads::Threads)
 

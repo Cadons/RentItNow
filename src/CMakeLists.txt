@@ -28,6 +28,13 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${PROJECT_SOURCES}
         model/car.h model/car.cpp
         model/user.h model/user.cpp
+        model/ecocar.h model/ecocar.cpp
+        model/midclasscar.h model/midclasscar.cpp
+        model/deluxecar.h model/deluxecar.cpp
+        model/cartype.h model/cartype.cpp
+
+        service/ICrud.h
+        service/carmanagmentservice.h service/carmanagmentservice.cpp
 
 
 
