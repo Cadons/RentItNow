@@ -33,10 +33,8 @@ public:
     Location getCarLoaction(string lp);
     float getTraveledDistance(string lp);
     int getNextServiceTime(string lp);//return how many km remains for the next service
-
-
-
-
+    void putCarInMaintenance(string ls);
+    void updateMaintenanceStatus();//this method should be performed every tick (1 tick=1 hour in the simulation)
 
 
 };

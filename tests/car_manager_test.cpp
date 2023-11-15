@@ -112,3 +112,23 @@ TEST(RentItNowTest_CAR_MANAGER, GET_TRAVELLED_DISTANCE)
 
     CarManagmentService::getInstance().clearAll();
 }
+TEST(RentItNowTest_CAR_MANAGER, CAR_IN_MAINTENANCE)
+{
+    EcoCar* myCar=new EcoCar("testCar", "testBrand","ABC1234");
+    myCar->updateDistanceTraveled(1500);
+    CarManagmentService::getInstance().add(myCar);
+    EXPECT_TRUE(CarManagmentService::getInstance().checkAviability("ABC1234"));
+
+    CarManagmentService::getInstance().putCarInMaintenance(myCar->getLicensePlate());
+
+    EXPECT_FALSE(CarManagmentService::getInstance().checkAviability("ABC1234"));
+    for (int i = 0; i < 25; i++) {
+        CarManagmentService::getInstance().updateMaintenanceStatus();
+
+    }
+    EXPECT_TRUE(CarManagmentService::getInstance().checkAviability("ABC1234"));
+
+    EXPECT_FALSE(CarManagmentService::getInstance().checkAviability("ABC1236"));
+
+    CarManagmentService::getInstance().clearAll();
+}

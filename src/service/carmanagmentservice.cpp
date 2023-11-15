@@ -24,7 +24,7 @@ bool CarManagmentService::add(Car* newObject)
 }
 bool CarManagmentService::verifyLicensePlate(const string lp)
 {
-    return !(this->myCars.find(lp)==this->myCars.end());
+    return this->myCars.count(lp)>0;
 }
 bool CarManagmentService::update(string lp, Car* updatedObject)
 {
@@ -97,7 +97,10 @@ Car *CarManagmentService::getCar(string licensePlate)
 
 bool CarManagmentService::checkAviability(string lp)
 {
-    if(this->carsInMaintaince.find(lp)!=this->carsInMaintaince.end())
+
+    if(this->myCars.count(lp)==0)
+        return false;
+    if(this->carsInMaintaince.count(lp)==0)
         return true;
     return false;
 }
@@ -124,6 +127,29 @@ int CarManagmentService::getNextServiceTime(string lp)
         return -1;
 
     return(this->myCars[lp]->getKmBeforeService()/ this->myCars[lp]->getSpeed());
+}
+
+void CarManagmentService::putCarInMaintenance(string lp)
+{
+    if(lp.empty())
+        return;
+    if(this->carsInMaintaince.count(lp)==0)
+    this->carsInMaintaince[lp]=24;
+}
+
+void CarManagmentService::updateMaintenanceStatus()
+{
+    for (auto it = carsInMaintaince.begin(); it != carsInMaintaince.end(); ) {
+    // Update the value
+    it->second -= 1;
+
+    // Check if the updated value is 0, then remove the item
+    if (it->second == 0) {
+            it = carsInMaintaince.erase(it);
+    } else {
+            ++it;
+        }
+    }
 }
 
 CarManagmentService::CarManagmentService()
