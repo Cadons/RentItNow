@@ -1,7 +1,8 @@
 #include "midclasscar.h"
 
 
-MidClassCar::MidClassCar(const string &name, const string &brand, const string &licensePlate) : Car(name, brand, licensePlate,CarType(4,2,25))
+#include "CarTypeName.h"
+MidClassCar::MidClassCar(const string &name, const string &brand, const string &licensePlate) : Car(name, brand, licensePlate,CarType(CarTypeNameToString(CarTypeName::MID_CLASS),4,2,25))
 {}
 
 

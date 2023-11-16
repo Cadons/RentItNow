@@ -1,13 +1,13 @@
 #ifndef CARMANAGMENTSERVICE_H
 #define CARMANAGMENTSERVICE_H
 
-#include "ICrud.h"
+#include "ICarManager.h"
 #include "../model/car.h"
 #include <map>
 #include <memory>
 #include "../model/location.h"
 
-class CarManagmentService: ICrud<string,Car*>
+class CarManagmentService: public ICarManager
 {
 private:
   CarManagmentService();
@@ -26,15 +26,15 @@ public:
     bool remove(string licensePlate);
     long long getCarsCount();
     CarManagmentService* clearAll();
-    map<string,std::shared_ptr<Car>> getCars();
-    Car* getCar(string licensePlate);
+    map<string,std::shared_ptr<Car>> getCars() override;
+    Car* getCar(string licensePlate) override;
 
-    bool checkAviability(string lp);
-    Location getCarLoaction(string lp);
-    float getTraveledDistance(string lp);
-    int getNextServiceTime(string lp);//return how many km remains for the next service
-    void putCarInMaintenance(string ls);
-    void updateMaintenanceStatus();//this method should be performed every tick (1 tick=1 hour in the simulation)
+    bool checkAviability(string lp) override;
+    Location getCarLoaction(string lp) override;
+    float getTraveledDistance(string lp) override;
+    int getNextServiceTime(string lp) override;//return how many km remains for the next service
+    void putCarInMaintenance(string ls) override;
+    void updateMaintenanceStatus() override;//this method should be performed every tick (1 tick=1 hour in the simulation)
 
 
 };

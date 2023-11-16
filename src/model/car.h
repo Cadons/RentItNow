@@ -3,10 +3,13 @@
 
 #include "cartype.h"
 #include "location.h"
+
 #include <stdlib.h>
 #include <string>
 
 using namespace std;
+
+
 class Car
 {
 public:
@@ -20,6 +23,7 @@ public:
     string getBrand() const;
     void setBrand(const string &newBrand);
     string getLicensePlate() const;
+    string getTypeName() const;
     int getCapacity();
     float getSpeed();
     float getPrice();

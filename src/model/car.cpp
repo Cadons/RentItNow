@@ -31,6 +31,11 @@ string Car::getLicensePlate() const
 {
     return licensePlate;
 }
+
+string Car::getTypeName() const
+{
+    return type.TYPE_NAME;
+}
 int Car::getCapacity(){
     return type.CAPACITY;
 }
