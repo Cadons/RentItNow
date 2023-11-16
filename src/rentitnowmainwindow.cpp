@@ -1,6 +1,7 @@
 #include "rentitnowmainwindow.h"
 #include "./ui_rentitnowmainwindow.h"
 #include "carmanager.h"
+
 RentItNowMainWindow::RentItNowMainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::RentItNowMainWindow)

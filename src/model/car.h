@@ -40,6 +40,8 @@ public:
     void setTotalKm(float newTotalKm);
 
 
+    void setKmBeforeService(int newKmBeforeService);
+
 private:
     string name="";
     string brand="";

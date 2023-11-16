@@ -95,7 +95,7 @@ bool Car::operator ==(const Car &other) const
 
 string Car::toString()
 {
-    std::string result;
+    std::string result="";
     result += "Name: " + name + "\n";
     result += "Brand: " + brand + "\n";
     result += "License Plate: " + licensePlate + "\n";
@@ -119,6 +119,12 @@ void Car::setTotalKm(float kmToAdd)
 {
     if(kmToAdd>0)
         totalKm += kmToAdd;
+}
+
+void Car::setKmBeforeService(int newKmBeforeService)
+{
+    if(newKmBeforeService<=1500&&newKmBeforeService>0)
+    kmBeforeService = newKmBeforeService;
 }
 
 Location Car::getLocation() const
