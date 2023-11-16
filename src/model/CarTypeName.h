@@ -8,9 +8,9 @@ inline std::string CarTypeNameToString(CarTypeName e) throw()
 {
     switch (e)
     {
-    case CarTypeName::ECO: return "Eco";
-    case CarTypeName::MID_CLASS: return "Mid Class";
-    case CarTypeName::DELUXE: return "Deluxe";
+    case CarTypeName::ECO: return "ECO";
+    case CarTypeName::MID_CLASS: return "MID-CLASS";
+    case CarTypeName::DELUXE: return "DELUXE";
     default: throw std::invalid_argument("Unimplemented type");
 
     }

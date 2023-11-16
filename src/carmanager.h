@@ -2,9 +2,9 @@
 #define CARMANAGER_H
 
 #include <QWidget>
+#include "carform.h"
 #include "qabstractitemmodel.h"
 #include "service/ICarManager.h"
-#include "tables/carmodel.h"
 namespace Ui {
 class CarManager;
 }
@@ -16,24 +16,25 @@ class CarManager : public QWidget
 public:
     explicit CarManager(QWidget *parent = nullptr);
     ~CarManager();
-
 private slots:
 
-    void on_addCar_pushButton_clicked();
 
-    void on_reset_pushButton_clicked();
 
-    void on_tabWidget_currentChanged(int index);
 
     void on_carsTable_clicked(const QModelIndex &index);
 
 
     void on_edit_pushButton_clicked();
 
+    void on_CarManagment_currentChanged(int index);
+
+    void on_delete_pushButton_clicked();
+
 private:
     Ui::CarManager *ui;
     ICarManager& carManager;
-    void cleanForm();
+    CarForm* newForm;
+    CarForm* editForm;
     Car* selectedCar;
 
 

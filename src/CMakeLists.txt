@@ -40,6 +40,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         service/ICarManager.h
         tables/carmodel.h tables/carmodel.cpp
         model/CarTypeName.h
+        carform.h carform.cpp carform.ui
+
 
 
 

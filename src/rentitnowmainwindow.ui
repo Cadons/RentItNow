@@ -6,42 +6,36 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>1052</width>
+    <height>824</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>RentItNowMainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QWidget" name="verticalLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>781</width>
-      <height>551</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <property name="sizeConstraint">
-      <enum>QLayout::SetDefaultConstraint</enum>
-     </property>
-    </layout>
-   </widget>
+   <layout class="QVBoxLayout" name="verticalLayout_2">
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetDefaultConstraint</enum>
+      </property>
+     </layout>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>1052</width>
      <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuRentItNow">
     <property name="title">
-     <string>RentItNow</string>
+     <string>Profile</string>
     </property>
     <addaction name="actionI_m_Boss"/>
     <addaction name="actionI_m_User"/>
@@ -53,8 +47,14 @@
     <addaction name="actionCar_Managment"/>
     <addaction name="actionUserManagment"/>
    </widget>
+   <widget class="QMenu" name="menuI_am">
+    <property name="title">
+     <string>I am  </string>
+    </property>
+   </widget>
    <addaction name="menuRentItNow"/>
    <addaction name="menuView"/>
+   <addaction name="menuI_am"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionCar_Managment">
