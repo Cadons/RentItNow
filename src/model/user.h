@@ -31,7 +31,7 @@ public:
     std::string getDrivingLicense() const;
     void setDrivingLicense(const std::string &newDrivingLicense);
     std::string getId() const;
-
+    std::string toString();
     bool operator ==(const User& other)const;
 
     void setId(const std::string &newId);

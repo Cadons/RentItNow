@@ -3,7 +3,7 @@
 #include "carform.h"
 #include "tables/carmodel.h"
 #include "ui_carmanager.h"
-#include "service/carmanagmentservice.h"
+#include "service/carmanagementservice.h"
 #include <QMessageBox>
 
 CarManager::CarManager(QWidget *parent) :

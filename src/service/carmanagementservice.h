@@ -1,5 +1,5 @@
-#ifndef CARMANAGMENTSERVICE_H
-#define CARMANAGMENTSERVICE_H
+#ifndef CARMANAGEMENTSERVICE_H
+#define CARMANAGEMENTSERVICE_H
 
 #include "ICarManager.h"
 #include "../model/car.h"
@@ -7,11 +7,11 @@
 #include <memory>
 #include "../model/location.h"
 
-class CarManagmentService: public ICarManager
+class CarManagementService: public ICarManager
 {
 private:
-  CarManagmentService();
-    virtual ~CarManagmentService();
+    CarManagementService();
+    virtual ~CarManagementService();
 
     map<string,std::shared_ptr<Car>> myCars;
     map<string,int> carsInMaintaince;//this map composed by lp and time that remain before the end of service time
@@ -19,14 +19,14 @@ private:
     bool verifyLicensePlate(const string lp);
 
 public:
-    static CarManagmentService& getInstance();
+    static CarManagementService& getInstance();
 
     bool add(Car* newObject) override;
     bool update(string oldObject, Car* updatedObject) override;
     bool remove(Car* objectToDelete) override;
-    bool remove(string licensePlate);
+    bool remove(string licensePlate) override;
     long long getCarsCount();
-    CarManagmentService* clearAll();
+    CarManagementService* clearAll();
     map<string,std::shared_ptr<Car>> getCars() override;
     Car* getCar(string licensePlate) override;
 
@@ -40,4 +40,4 @@ public:
 
 };
 
-#endif // CARMANAGMENTSERVICE_H
+#endif // CARMANAGEMENTSERVICE_H

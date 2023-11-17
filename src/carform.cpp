@@ -5,7 +5,7 @@
 #include "model/deluxecar.h"
 #include "model/ecocar.h"
 #include "model/midclasscar.h"
-#include "service/carmanagmentservice.h"
+#include "service/carmanagementservice.h"
 
 CarForm::CarForm(Car* car,QTabWidget* tabMenu,QWidget *parent) :
     QWidget(parent),

@@ -34,7 +34,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         model/cartype.h model/cartype.cpp
 
         service/ICrud.h
-        service/carmanagmentservice.h service/carmanagmentservice.cpp
+        service/carmanagementservice.h service/carmanagementservice.cpp
         model/location.h model/location.cpp
         carmanager.h carmanager.cpp carmanager.ui
         service/ICarManager.h

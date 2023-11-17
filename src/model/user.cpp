@@ -55,6 +55,18 @@ std::string User::getId()const
     return id;
 }
 
+std::string User::toString()
+{
+    std::string result = "User {";
+    result += "id: " + id + ", ";
+    result += "name: " + name + ", ";
+    result += "surname: " + surname + ", ";
+    result += "address: " + address + ", ";
+    result += "creditCard: " + creditCard + ", ";
+    result += "drivingLicense: " + drivingLicense + "}";
+    return result;
+}
+
 bool User::operator ==(const User &other) const
 {
     return id == other.id &&

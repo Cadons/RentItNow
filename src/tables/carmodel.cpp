@@ -1,5 +1,5 @@
 #include "carmodel.h"
-#include "../service/carmanagmentservice.h"
+#include "../service/carmanagementservice.h"
 CarModel::CarModel(map<string, std::shared_ptr<Car>> data,QObject *parent)
     : QAbstractTableModel{parent}
 {

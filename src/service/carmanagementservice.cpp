@@ -1,12 +1,12 @@
-#include "carmanagmentservice.h"
+#include "carmanagementservice.h"
 #include "../repository/carsrepository.h"
-CarManagmentService &CarManagmentService::getInstance()
+CarManagementService &CarManagementService::getInstance()
 {
-    static CarManagmentService instance; // Guaranteed to be initialized only once.
+    static CarManagementService instance; // Guaranteed to be initialized only once.
     return instance;
 }
 
-bool CarManagmentService::add(Car* newObject)
+bool CarManagementService::add(Car* newObject)
 {
 
     if(newObject!=nullptr)
@@ -22,11 +22,11 @@ bool CarManagmentService::add(Car* newObject)
     }
 
 }
-bool CarManagmentService::verifyLicensePlate(const string lp)
+bool CarManagementService::verifyLicensePlate(const string lp)
 {
     return this->myCars.count(lp)>0;
 }
-bool CarManagmentService::update(string lp, Car* updatedObject)
+bool CarManagementService::update(string lp, Car* updatedObject)
 {
     //search the object by licencse plate
     if(lp!=""&&updatedObject!=nullptr&&myCars[lp]!=nullptr&&lp==updatedObject->getLicensePlate())
@@ -52,14 +52,14 @@ bool CarManagmentService::update(string lp, Car* updatedObject)
     }
 
 }
-bool CarManagmentService::remove(string licensePlate)
+bool CarManagementService::remove(string licensePlate)
 {
     if(verifyLicensePlate(licensePlate))
         return this->remove(myCars[licensePlate].get());
     return false;
 }
 
-bool CarManagmentService::remove(Car* objectToDelete)
+bool CarManagementService::remove(Car* objectToDelete)
 {
     if(objectToDelete!=nullptr&&myCars.size()>0){
 
@@ -72,23 +72,23 @@ bool CarManagmentService::remove(Car* objectToDelete)
 }
 
 
-long long CarManagmentService::getCarsCount()
+long long CarManagementService::getCarsCount()
 {
     return this->myCars.size();
 }
 
-CarManagmentService* CarManagmentService::clearAll()
+CarManagementService* CarManagementService::clearAll()
 {
     this->myCars.clear();
     return this;
 }
 
-map<string,std::shared_ptr<Car>> CarManagmentService::getCars()
+map<string,std::shared_ptr<Car>> CarManagementService::getCars()
 {
     return this->myCars;
 }
 
-Car *CarManagmentService::getCar(string licensePlate)
+Car *CarManagementService::getCar(string licensePlate)
 {
     if(licensePlate.empty())
         return nullptr;
@@ -96,7 +96,7 @@ Car *CarManagmentService::getCar(string licensePlate)
         return this->myCars[licensePlate].get();
 }
 
-bool CarManagmentService::checkAviability(string lp)
+bool CarManagementService::checkAviability(string lp)
 {
 
     if(this->myCars.count(lp)==0)
@@ -106,7 +106,7 @@ bool CarManagmentService::checkAviability(string lp)
     return false;
 }
 
-Location CarManagmentService::getCarLoaction(string lp)
+Location CarManagementService::getCarLoaction(string lp)
 {
     if(lp.empty()||!verifyLicensePlate(lp))
         return Location();
@@ -114,7 +114,7 @@ Location CarManagmentService::getCarLoaction(string lp)
     return this->myCars[lp]->getLocation();
 }
 
-float CarManagmentService::getTraveledDistance(string lp)
+float CarManagementService::getTraveledDistance(string lp)
 {
     if(lp.empty()||!verifyLicensePlate(lp))
         return 0;
@@ -122,7 +122,7 @@ float CarManagmentService::getTraveledDistance(string lp)
     return this->myCars[lp]->getTotalKm();
 }
 
-int CarManagmentService::getNextServiceTime(string lp)
+int CarManagementService::getNextServiceTime(string lp)
 {
     if(lp.empty()||!verifyLicensePlate(lp))
         return -1;
@@ -130,7 +130,7 @@ int CarManagmentService::getNextServiceTime(string lp)
     return(this->myCars[lp]->getKmBeforeService()/ this->myCars[lp]->getSpeed());
 }
 
-void CarManagmentService::putCarInMaintenance(string lp)
+void CarManagementService::putCarInMaintenance(string lp)
 {
     if(lp.empty())
         return;
@@ -138,7 +138,7 @@ void CarManagmentService::putCarInMaintenance(string lp)
     this->carsInMaintaince[lp]=24;
 }
 
-void CarManagmentService::updateMaintenanceStatus()
+void CarManagementService::updateMaintenanceStatus()
 {
     for (auto it = carsInMaintaince.begin(); it != carsInMaintaince.end(); ) {
     // Update the value
@@ -153,14 +153,14 @@ void CarManagmentService::updateMaintenanceStatus()
     }
 }
 
-CarManagmentService::CarManagmentService()
+CarManagementService::CarManagementService()
 {
 
     this->myCars=CarsRepository::getInstance().load();
 
 }
 
-CarManagmentService::~CarManagmentService()
+CarManagementService::~CarManagementService()
 {
     CarsRepository::getInstance().save(myCars);
 }

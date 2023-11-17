@@ -95,18 +95,13 @@ bool Car::operator ==(const Car &other) const
 
 string Car::toString()
 {
-    std::string result="";
-    result += "Name: " + name + "\n";
-    result += "Brand: " + brand + "\n";
-    result += "License Plate: " + licensePlate + "\n";
-
-    // Assuming CarType has a getTypeName() method
-    const std::string carTypeName =  typeid(type).name();
-    result += "Car Type: " + carTypeName + "\n";
-
-    result += "Kilometers Before Service: " + std::to_string(kmBeforeService) + "\n";
-    // Include other details as needed
-
+    string result = "Car {";
+    result += "name: " + name + ", ";
+    result += "brand: " + brand + ", ";
+    result += "licensePlate: " + licensePlate + ", ";
+    result += "type: " + type.TYPE_NAME + ", ";
+    result += "kmBeforeService: " + to_string(kmBeforeService) + ", ";
+    result += "totalKm: " + to_string(totalKm) + "}";
     return result;
 }
 
