@@ -45,6 +45,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         repository/IRepository.h
         repository/repositoryutils.h repository/repositoryutils.cpp
         repository/usersrepository.h repository/usersrepository.cpp
+        service/usermanagementservice.h service/usermanagementservice.cpp
+        service/IUserManager.h
 
 
 
