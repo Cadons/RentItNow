@@ -44,7 +44,8 @@ include_directories(${GTestIncludes} ${CMAKE_CURRENT_SOURCE_DIR}/../src/)
 add_executable(RentItNowTest main.cpp car_test.cpp ${GTestFiles}
     car_manager_test.cpp
     car_repo_test.cpp
-    car_manager_test.h)
+    car_manager_test.h
+    user_repo_test.cpp)
 
 file(GLOB MODEL_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/../src/model/*.cpp)
 target_sources(RentItNowTest PRIVATE ${MODEL_SOURCES})

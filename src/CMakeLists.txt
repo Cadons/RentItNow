@@ -44,6 +44,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         repository/carsrepository.h repository/carsrepository.cpp
         repository/IRepository.h
         repository/repositoryutils.h repository/repositoryutils.cpp
+        repository/usersrepository.h repository/usersrepository.cpp
 
 
 

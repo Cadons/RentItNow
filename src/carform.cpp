@@ -49,7 +49,7 @@ CarForm::~CarForm()
     delete carToEdit;
     delete tabMenu;
     if(carToEdit!=nullptr)
-    delete carToEdit;
+        delete carToEdit;
 }
 
 void CarForm::on_addCar_pushButton_clicked()
@@ -117,9 +117,9 @@ void CarForm::on_addCar_pushButton_clicked()
     }else{
 
         int ret=QMessageBox::question(this, "RentItNow",
-                                           "Do you want save",
-                                           QMessageBox::Yes|QMessageBox::No
-                                           );
+                                        "Do you want save",
+                                        QMessageBox::Yes|QMessageBox::No
+                                        );
         if(ret==QMessageBox::Yes)
         {
             bool update=false;

@@ -43,7 +43,7 @@ bool CarsRepository::save(std::map<string, std::shared_ptr<Car> > data)
         jsonObject[QString::fromStdString(it->second->getLicensePlate())]=convertObjectToJson(*it->second);
     }
     QJsonDocument jsonDoc(jsonObject);
-    std:string myJson=jsonDoc.toJson(QJsonDocument::Compact).toStdString();
+    std::string myJson=jsonDoc.toJson(QJsonDocument::Compact).toStdString();
     return RepositoryUtils::writeOnFile(myJson,this->path);
 }
 
