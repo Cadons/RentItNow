@@ -36,6 +36,7 @@ private:
     CarForm* newForm;
     CarForm* editForm;
     Car* selectedCar;
+    void updateTable();
 
 
 };

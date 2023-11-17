@@ -18,7 +18,7 @@ CarManager::CarManager(QWidget *parent) :
     ui->CarManagment->addTab(addCarForm,"Add new car");
 
     newForm=addCarForm;
-
+    updateTable();
 }
 
 CarManager::~CarManager()
@@ -27,14 +27,6 @@ CarManager::~CarManager()
     delete newForm;
     delete editForm;
 }
-
-
-
-
-
-
-
-
 
 
 void CarManager::on_carsTable_clicked(const QModelIndex &index)
@@ -80,8 +72,7 @@ void CarManager::on_CarManagment_currentChanged(int index)
 {
     if(index==0)
     {
-        ui->carsTable->setModel(dynamic_cast<QAbstractTableModel*>(new CarModel(carManager.getCars(),this)));
-        ui->carsTable->show();
+      updateTable();
     }else{
         ui->edit_pushButton->setEnabled(false);
         ui->delete_pushButton->setEnabled(false);
@@ -110,7 +101,7 @@ void CarManager::on_delete_pushButton_clicked()
                                         QMessageBox::Ok);
 
                ui->carsTable->clearSelection();
-               on_CarManagment_currentChanged(1);
+               on_CarManagment_currentChanged(0);
                ui->edit_pushButton->setEnabled(false);
                ui->delete_pushButton->setEnabled(false);
             }else{
@@ -128,5 +119,11 @@ void CarManager::on_delete_pushButton_clicked()
                          QMessageBox::Ok
                          );
     }
+}
+
+void CarManager::updateTable()
+{
+    ui->carsTable->setModel(dynamic_cast<QAbstractTableModel*>(new CarModel(carManager.getCars(),this)));
+    ui->carsTable->show();
 }
 

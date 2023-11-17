@@ -1,5 +1,5 @@
 #include "carmanagmentservice.h"
-
+#include "../repository/carsrepository.h"
 CarManagmentService &CarManagmentService::getInstance()
 {
     static CarManagmentService instance; // Guaranteed to be initialized only once.
@@ -16,7 +16,7 @@ bool CarManagmentService::add(Car* newObject)
                 return false;
         this->myCars[newObject->getLicensePlate()] = std::make_shared<Car>(*newObject);
 
-            return true;
+      return CarsRepository::getInstance().save(myCars);
     }else{
             return false;
     }
@@ -44,7 +44,7 @@ bool CarManagmentService::update(string lp, Car* updatedObject)
             if(updatedObject->getTotalKm()>myCars[lp]->getTotalKm())
             myCars[lp].get()->setTotalKm(updatedObject->getTotalKm());
 
-           return true;
+           return CarsRepository::getInstance().save(myCars);
 
 
     }else{
@@ -64,7 +64,8 @@ bool CarManagmentService::remove(Car* objectToDelete)
     if(objectToDelete!=nullptr&&myCars.size()>0){
 
             myCars.erase(objectToDelete->getLicensePlate());
-            return true;
+        return CarsRepository::getInstance().save(myCars);
+
 
     }
     return false;
@@ -155,4 +156,11 @@ void CarManagmentService::updateMaintenanceStatus()
 CarManagmentService::CarManagmentService()
 {
 
+    this->myCars=CarsRepository::getInstance().load();
+
+}
+
+CarManagmentService::~CarManagmentService()
+{
+    CarsRepository::getInstance().save(myCars);
 }

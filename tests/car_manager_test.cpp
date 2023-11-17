@@ -1,11 +1,11 @@
-
 #include <gtest/gtest.h>
 #include <gmock/gmock-matchers.h>
+#include "car_manager_test.h"
 #include "model/ecocar.h"
 #include "service/carmanagmentservice.h"
 using namespace testing;
 
-TEST(RentItNowTest_CAR_MANAGER, ADD)
+TEST_F(RentItNowTest_CAR_MANAGER, ADD)
 {
     EcoCar* myCar=new EcoCar("testCar", "testBrand","ABC1234");
 
@@ -17,10 +17,9 @@ TEST(RentItNowTest_CAR_MANAGER, ADD)
     ASSERT_TRUE(CarManagmentService::getInstance().add(myCar));
     ASSERT_EQ(2,CarManagmentService::getInstance().getCarsCount());
     delete myCar;
-    CarManagmentService::getInstance().clearAll();
 
 }
-TEST(RentItNowTest_CAR_MANAGER, UPDATE)
+TEST_F(RentItNowTest_CAR_MANAGER, UPDATE)
 {
     EcoCar* myCar=new EcoCar("testCar", "testBrand","ABC1234");
     EcoCar* myCar2=new EcoCar("testCar3", "testBrand3","ABC1234");
@@ -36,11 +35,10 @@ TEST(RentItNowTest_CAR_MANAGER, UPDATE)
     delete myCar;
     delete myCar2;
     delete myCar3;
-    CarManagmentService::getInstance().clearAll();
 
 
 }
-TEST(RentItNowTest_CAR_MANAGER, DELETE)
+TEST_F(RentItNowTest_CAR_MANAGER, DELETE)
 {
     EcoCar* myCar=new EcoCar("testCar", "testBrand","ABC1234");
     EcoCar* myCar2=new EcoCar("testCar2", "testBrand2","ABC1233");
@@ -58,9 +56,8 @@ TEST(RentItNowTest_CAR_MANAGER, DELETE)
 
     delete myCar;
     delete myCar2;
-    CarManagmentService::getInstance().clearAll();
 }
-TEST(RentItNowTest_CAR_MANAGER, GET_MY_CARS)
+TEST_F(RentItNowTest_CAR_MANAGER, GET_MY_CARS)
 {
     EcoCar* myCar=new EcoCar("testCar", "testBrand","ABC1234");
     EcoCar* myCar2=new EcoCar("testCar2", "testBrand2","ABC1233");
@@ -81,9 +78,8 @@ TEST(RentItNowTest_CAR_MANAGER, GET_MY_CARS)
     delete myCar;
     delete myCar2;
 
-    CarManagmentService::getInstance().clearAll();
 }
-TEST(RentItNowTest_CAR_MANAGER, NEXT_SERVICE_TIME)
+TEST_F(RentItNowTest_CAR_MANAGER, NEXT_SERVICE_TIME)
 {
     EcoCar* myCar=new EcoCar("testCar", "testBrand","ABC1234");
     myCar->updateDistanceTraveled(1500);
@@ -98,9 +94,8 @@ TEST(RentItNowTest_CAR_MANAGER, NEXT_SERVICE_TIME)
     EXPECT_TRUE(CarManagmentService::getInstance().update("ABC1234",myCar));
     EXPECT_EQ(66, CarManagmentService::getInstance().getNextServiceTime("ABC1234"));
 
-    CarManagmentService::getInstance().clearAll();
 }
-TEST(RentItNowTest_CAR_MANAGER, GET_TRAVELLED_DISTANCE)
+TEST_F(RentItNowTest_CAR_MANAGER, GET_TRAVELLED_DISTANCE)
 {
     EcoCar* myCar=new EcoCar("testCar", "testBrand","ABC1234");
     myCar->updateDistanceTraveled(1500);
@@ -110,9 +105,8 @@ TEST(RentItNowTest_CAR_MANAGER, GET_TRAVELLED_DISTANCE)
     EXPECT_EQ(2500, CarManagmentService::getInstance().getTraveledDistance("ABC1234"));
     EXPECT_EQ(0, CarManagmentService::getInstance().getTraveledDistance("1234"));
 
-    CarManagmentService::getInstance().clearAll();
 }
-TEST(RentItNowTest_CAR_MANAGER, CAR_IN_MAINTENANCE)
+TEST_F(RentItNowTest_CAR_MANAGER, CAR_IN_MAINTENANCE)
 {
     EcoCar* myCar=new EcoCar("testCar", "testBrand","ABC1234");
     myCar->updateDistanceTraveled(1500);
@@ -130,5 +124,4 @@ TEST(RentItNowTest_CAR_MANAGER, CAR_IN_MAINTENANCE)
 
     EXPECT_FALSE(CarManagmentService::getInstance().checkAviability("ABC1236"));
 
-    CarManagmentService::getInstance().clearAll();
 }

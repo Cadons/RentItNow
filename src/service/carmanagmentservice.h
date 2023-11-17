@@ -11,6 +11,7 @@ class CarManagmentService: public ICarManager
 {
 private:
   CarManagmentService();
+    virtual ~CarManagmentService();
 
     map<string,std::shared_ptr<Car>> myCars;
     map<string,int> carsInMaintaince;//this map composed by lp and time that remain before the end of service time

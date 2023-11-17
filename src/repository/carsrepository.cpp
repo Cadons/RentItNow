@@ -1,8 +1,8 @@
 #include "carsrepository.h"
-#include "model/deluxecar.h"
-#include "model/ecocar.h"
-#include "model/midclasscar.h"
-#include "repository/repositoryutils.h"
+#include "../model/deluxecar.h"
+#include "../model/ecocar.h"
+#include "../model/midclasscar.h"
+#include "repositoryutils.h"
 
 
 #include <QJsonDocument>
@@ -37,8 +37,7 @@ std::map<string, std::shared_ptr<Car> > CarsRepository::load()
 
 bool CarsRepository::save(std::map<string, std::shared_ptr<Car> > data)
 {
-    if(data.empty())
-        return false;
+
     QJsonObject jsonObject;
     for (auto it = data.begin(); it!=data.end();++it) {
         jsonObject[QString::fromStdString(it->second->getLicensePlate())]=convertObjectToJson(*it->second);

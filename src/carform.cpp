@@ -177,7 +177,7 @@ void CarForm::cleanForm(){
 
 void CarForm::back()
 {
-    tabMenu->setCurrentIndex(1);
+    tabMenu->setCurrentIndex(0);
     tabMenu->removeTab(2);
 
 }

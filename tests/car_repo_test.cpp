@@ -1,4 +1,3 @@
-
 #include "model/ecocar.h"
 #include "model/deluxecar.h"
 #include "repository/carsrepository.h"
