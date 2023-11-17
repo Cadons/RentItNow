@@ -9,7 +9,7 @@
 CarManager::CarManager(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CarManager),
-    carManager(CarManagmentService::getInstance())
+    carManager(CarManagementService::getInstance())
 
 {
     ui->setupUi(this);

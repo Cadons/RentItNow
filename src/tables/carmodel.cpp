@@ -40,7 +40,7 @@ QVariant CarModel::data(const QModelIndex &index, int role) const
         case 4:
             return obj->getKmBeforeService();
         case 5:
-          return CarManagmentService::getInstance().checkAviability(obj->getLicensePlate())?   QString("Available"):     QString("Not Available");
+          return CarManagementService::getInstance().checkAviability(obj->getLicensePlate())?   QString("Available"):     QString("Not Available");
         case 6:
           return obj->getTotalKm();
         case 7:
@@ -56,7 +56,7 @@ QVariant CarModel::data(const QModelIndex &index, int role) const
 
 void CarModel::updateData()
 {
-    carsData=CarManagmentService::getInstance().getCars();
+    carsData=CarManagementService::getInstance().getCars();
     keys.clear();
     for(const auto& e: carsData){
         keys.push_back(e.first);

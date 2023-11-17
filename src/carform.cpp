@@ -12,7 +12,7 @@ CarForm::CarForm(Car* car,QTabWidget* tabMenu,QWidget *parent) :
     ui(new Ui::CarForm),
     carToEdit(car),
     tabMenu(tabMenu),
-    carManager(CarManagmentService::getInstance())
+    carManager(CarManagementService::getInstance())
 
 {
     ui->setupUi(this);
@@ -36,7 +36,7 @@ CarForm::CarForm(Car* car,QTabWidget* tabMenu,QWidget *parent) :
 CarForm::CarForm(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CarForm),
-    carManager(CarManagmentService::getInstance())
+    carManager(CarManagementService::getInstance())
 {
     ui->setupUi(this);
     carToEdit=nullptr;
