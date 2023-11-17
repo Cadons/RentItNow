@@ -47,6 +47,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         repository/usersrepository.h repository/usersrepository.cpp
         service/usermanagementservice.h service/usermanagementservice.cpp
         service/IUserManager.h
+        usermanager.h usermanager.cpp usermanager.ui
+        userform.h userform.cpp userform.ui
 
 
 

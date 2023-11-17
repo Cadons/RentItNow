@@ -1,14 +1,16 @@
 #include "usermanager.h"
 #include "ui_usermanager.h"
-
-UserManager::UserManager(QWidget *parent) :
+#include "service/usermanagementservice.h"
+Usermanager::Usermanager(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::UserManager)
+    ui(new Ui::Usermanager),
+    userManager(UserManagementService::getInstance())
 {
     ui->setupUi(this);
+
 }
 
-UserManager::~UserManager()
+Usermanager::~Usermanager()
 {
     delete ui;
 }
