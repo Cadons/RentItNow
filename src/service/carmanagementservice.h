@@ -36,8 +36,7 @@ public:
     int getNextServiceTime(string lp) override;//return how many km remains for the next service
     void putCarInMaintenance(string ls) override;
     void updateMaintenanceStatus() override;//this method should be performed every tick (1 tick=1 hour in the simulation)
-
-
+    void moveCar(string lp, Location& to) override;
 };
 
 #endif // CARMANAGEMENTSERVICE_H

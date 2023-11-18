@@ -12,7 +12,7 @@ public:
 
     virtual map<string,std::shared_ptr<Car>> getCars()=0;
     virtual Car* getCar(string licensePlate)=0;
-
+    virtual void moveCar(string lp, Location& to)=0;
     virtual bool checkAviability(string lp)=0;
     virtual Location* getCarLoaction(string lp)=0;
     virtual float getTraveledDistance(string lp)=0;

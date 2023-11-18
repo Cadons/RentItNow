@@ -3,6 +3,7 @@
 
 #include "carmanager.h"
 #include "usermanager.h"
+#include "userrentform.h"
 #include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
@@ -29,8 +30,9 @@ private slots:
 
 private:
     Ui::RentItNowMainWindow *ui;
-    CarManager* carManager=nullptr;
-    UserManager* userManager=nullptr;
+    std::unique_ptr<CarManager> carManager=nullptr;
+    std::unique_ptr<UserManager> userManager=nullptr;
+    std::unique_ptr<UserRentForm> rentForm=nullptr;
 
     bool isBoss;
 };

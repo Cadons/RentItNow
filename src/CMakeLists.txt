@@ -54,6 +54,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         service/IRentingService.h
         model/circle.h model/circle.cpp
         model/rentresearchresult.h model/rentresearchresult.cpp
+        model/simpletown.h model/simpletown.cpp
+        userrentform.h userrentform.cpp userrentform.ui
 
 
 

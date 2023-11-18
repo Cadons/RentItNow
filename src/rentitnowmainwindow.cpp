@@ -1,6 +1,7 @@
 #include "rentitnowmainwindow.h"
 #include "./ui_rentitnowmainwindow.h"
 #include "carmanager.h"
+#include "userrentform.h"
 
 RentItNowMainWindow::RentItNowMainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -12,12 +13,12 @@ RentItNowMainWindow::RentItNowMainWindow(QWidget *parent)
     ui->menuI_am->setTitle(QString("I am a User"));
     ui->actionCar_Managment->setDisabled(true);
     ui->actionUserManagment->setDisabled(true);
+    on_actionI_m_User_triggered();
 }
 
 RentItNowMainWindow::~RentItNowMainWindow()
 {
     delete ui;
-    delete carManager;
 }
 
 
@@ -29,11 +30,10 @@ void RentItNowMainWindow::on_actionCar_Managment_triggered()
             userManager->hide();
         if(carManager==nullptr)
         {
-            CarManager* carManager=new CarManager(this);
-            ui->verticalLayout->addWidget(carManager);
-            this->carManager=carManager;
+            this->carManager=std::make_unique<CarManager>(this);
+            ui->verticalLayout->addWidget(carManager.get());
         }
-            carManager->show();
+        carManager->show();
 
     }
 
@@ -48,11 +48,10 @@ void RentItNowMainWindow::on_actionUserManagment_triggered()
             carManager->hide();
         if(userManager==nullptr)
         {
-            UserManager* userManager=new UserManager(this);
-            ui->verticalLayout->addWidget(userManager);
-            this->userManager=userManager;
+            this->userManager=std::make_unique<UserManager>(this);
+            ui->verticalLayout->addWidget(userManager.get());
         }
-            userManager->show();
+        userManager->show();
 
     }
 
@@ -60,7 +59,8 @@ void RentItNowMainWindow::on_actionUserManagment_triggered()
 void RentItNowMainWindow::on_actionI_m_Boss_triggered()
 {
     isBoss=true;
-
+   if(rentForm!=nullptr)
+        rentForm->hide();
     ui->actionCar_Managment->setDisabled(false);
     ui->actionUserManagment->setDisabled(false);
 
@@ -76,7 +76,22 @@ void RentItNowMainWindow::on_actionI_m_User_triggered()
     {
         carManager->hide();
 
+
     }
+    if(userManager!=nullptr)
+    {
+        userManager->hide();
+
+
+    }
+
+    if(rentForm==nullptr)
+    {
+        this->rentForm=std::make_unique<UserRentForm>(this);
+
+        ui->verticalLayout->addWidget(this->rentForm.get());
+    }
+    rentForm->show();
     ui->actionCar_Managment->setDisabled(true);
     ui->actionUserManagment->setDisabled(true);
     ui->menuI_am->setTitle(QString("I am a User"));

@@ -8,12 +8,12 @@ class Location
 {
 public:
     Location();
-
+    Location(const std::shared_ptr<Circle> &newPosition);
     std::shared_ptr<Circle> getPosition() const;
     void setPosition(const std::shared_ptr<Circle> &newPosition);
 
 private:
-    std::shared_ptr<Circle> position=nullptr;
+    std::shared_ptr<Circle> position;
 
 };
 

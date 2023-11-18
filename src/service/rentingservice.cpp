@@ -1,25 +1,14 @@
 #include "rentingservice.h"
 #include "carmanagementservice.h"
 #include "usermanagementservice.h"
-RentingService::RentingService()
+RentingService::RentingService():city(SimpleTown::getInstance())
 {
-    this->outer=std::make_shared<Circle>(CircleType::OUTER);
-    std::shared_ptr<Circle> middle=std::make_shared<Circle>(CircleType::MIDDLE);
-    std::shared_ptr<Circle> inner=std::make_shared<Circle>(CircleType::INNER);
 
-    outer->setChild(middle)->setChild(inner);
-    inner->setParent(middle)->setParent(outer);
-    this->inner=inner;
 }
 
-std::shared_ptr<Circle> RentingService::getOuterCity() const
+SimpleTown &RentingService::getCity() const
 {
-    return outer;
-}
-
-std::shared_ptr<Circle> RentingService::getInnerCity() const
-{
-    return inner;
+    return city;
 }
 
 Location RentingService::getLocation(string lp)
@@ -35,7 +24,7 @@ Location RentingService::getLocation(string lp)
 
 RentResearchResult &RentingService::requestRent(string dl, int passegers, CarType type, Location start, Location destination)
 {
-
+//TODO
 }
 
 bool RentingService::rent(string lp, string dl)
@@ -44,14 +33,18 @@ bool RentingService::rent(string lp, string dl)
     User* user= UserManagementService::getInstance(). getUser(dl);
     if(car!=nullptr&&user!=nullptr){
         car->setOwner(user);
-
+        return true;
     }
+    return false;
 }
 
 bool RentingService::release(string lp, string dl)
 {
-
+    if(lp.empty()||dl.empty()|| CarManagementService::getInstance(). getCar(lp)==nullptr|| CarManagementService::getInstance(). getCar(lp)->getOwner()->getDrivingLicense()!=dl){
+        return false;
+    }
     CarManagementService::getInstance(). getCar(lp)->setOwner(nullptr);
+    return true;
 }
 
 RentingService &RentingService::getInstance()

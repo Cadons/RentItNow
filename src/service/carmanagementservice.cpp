@@ -156,6 +156,18 @@ void CarManagementService::updateMaintenanceStatus()
     }
 }
 
+void CarManagementService::moveCar(string lp, Location& to)
+{
+    if(lp.empty())
+        return;
+    Car* car=getCar(lp);
+    if(car!=nullptr){
+        //TODO add km calc
+        car->setLocation(to);
+    }
+
+}
+
 CarManagementService::CarManagementService()
 {
 

@@ -52,7 +52,7 @@ private:
     string licensePlate="";
     int kmBeforeService=1500;
     const CarType type;
-    std::shared_ptr<Location> location;
+    std::shared_ptr<Location> location=std::make_shared<Location>();
     float totalKm=0;
     std::unique_ptr<User> owner=nullptr;
 

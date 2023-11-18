@@ -13,7 +13,7 @@ TEST(RentItNowTest_CAR_REPOSITORY, ConvertCarToJSON)
     EcoCar car("testCar", "testBrand", "1234");
 
     auto obj = CarsRepository::getInstance().convertObjectToJson(car);
-    std::string expectedJson = "{\"brand\":\"testBrand\",\"km_to_service\":1500,\"lp\":\"1234\",\"name\":\"testCar\",\"total_km\":0,\"type\":\"ECO\"}";
+    std::string expectedJson = "{\"brand\":\"testBrand\",\"km_to_service\":1500,\"location\":\"Inner\",\"lp\":\"1234\",\"name\":\"testCar\",\"owner\":\"null\",\"total_km\":0,\"type\":\"ECO\"}";
 
     EXPECT_EQ(expectedJson, RepositoryUtils::convertJsonToString(obj));
 }
@@ -23,7 +23,7 @@ TEST(RentItNowTest_CAR_REPOSITORY, FromJSONToCar)
     EcoCar car("testCar", "testBrand", "1234");
 
     auto obj = CarsRepository::getInstance().convertObjectToJson(car);
-    std::string expectedJson = "{\"brand\":\"testBrand\",\"km_to_service\":1500,\"lp\":\"1234\",\"name\":\"testCar\",\"total_km\":0,\"type\":\"ECO\"}";
+    std::string expectedJson = "{\"brand\":\"testBrand\",\"km_to_service\":1500,\"location\":\"Inner\",\"lp\":\"1234\",\"name\":\"testCar\",\"owner\":\"null\",\"total_km\":0,\"type\":\"ECO\"}";
 
     // Convert JSON to Car
     auto convertedCar = CarsRepository::getInstance().convertJsonToObject(expectedJson);
