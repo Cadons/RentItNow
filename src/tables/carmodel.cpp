@@ -3,7 +3,7 @@
 CarModel::CarModel(map<string, std::shared_ptr<Car>> data,QObject *parent)
     : QAbstractTableModel{parent}
 {
-     updateData();
+    updateData();
 }
 
 int CarModel::rowCount(const QModelIndex &parent) const
@@ -23,7 +23,7 @@ QVariant CarModel::data(const QModelIndex &index, int role) const
     if(role==Qt::DisplayRole)
     {
 
-     const Car* obj = carsData.at(keys[index.row()]).get();
+        const Car* obj = carsData.at(keys[index.row()]).get();
         switch (index.column()) {
         case 0:
             return QString(QString::fromStdString(obj->getName()));
@@ -40,11 +40,13 @@ QVariant CarModel::data(const QModelIndex &index, int role) const
         case 4:
             return obj->getKmBeforeService();
         case 5:
-          return CarManagementService::getInstance().checkAviability(obj->getLicensePlate())?   QString("Available"):     QString("Not Available");
+            return CarManagementService::getInstance().checkAviability(obj->getLicensePlate())?   QString("Available"):     QString("Not Available");
         case 6:
-          return obj->getTotalKm();
+            return obj->getTotalKm();
         case 7:
-          return 0;//obj->getLocation();
+            if(obj->getLocation()!=nullptr)
+                return QString(QString::fromStdString(obj->getLocation().get()->getPosition()->toString()));
+            return 0;
         }
 
 

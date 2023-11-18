@@ -119,17 +119,34 @@ void Car::setTotalKm(float kmToAdd)
 void Car::setKmBeforeService(int newKmBeforeService)
 {
     if(newKmBeforeService<=1500&&newKmBeforeService>0)
-    kmBeforeService = newKmBeforeService;
+        kmBeforeService = newKmBeforeService;
 }
 
-Location Car::getLocation() const
+void Car::setOwner(User* user)
+{
+    if (user != nullptr)
+    {
+        this->owner = std::make_unique<User>(*user);
+    }
+    else
+    {
+
+        this->owner = nullptr;
+    }}
+
+User* Car::getOwner()
+{
+    return owner.get();
+}
+
+std::shared_ptr<Location> Car::getLocation() const
 {
     return this->location;
 }
 
 void Car::setLocation(const Location &newLocation)
 {
-    this->location = newLocation;
+    this->location = std::make_shared<Location>(newLocation);
 }
 
 

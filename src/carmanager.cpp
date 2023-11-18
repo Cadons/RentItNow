@@ -13,11 +13,10 @@ CarManager::CarManager(QWidget *parent) :
 
 {
     ui->setupUi(this);
-    CarForm* addCarForm=new CarForm(this);
+    newForm=std::make_unique<CarForm>(this);
     ui->CarManagment->setCurrentIndex(0);
-    ui->CarManagment->addTab(addCarForm,"Add new car");
+    ui->CarManagment->addTab(newForm.get(),"Add new car");
 
-    newForm=std::make_unique<CarForm>(addCarForm);
     updateTable();
 }
 

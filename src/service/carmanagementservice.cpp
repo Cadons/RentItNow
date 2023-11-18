@@ -99,19 +99,22 @@ Car *CarManagementService::getCar(string licensePlate)
 bool CarManagementService::checkAviability(string lp)
 {
 
+
     if(this->myCars.count(lp)==0)
+        return false;
+    if(this->myCars.at(lp)->getOwner()!=nullptr)
         return false;
     if(this->carsInMaintaince.count(lp)==0)
         return true;
     return false;
 }
 
-Location CarManagementService::getCarLoaction(string lp)
+Location* CarManagementService::getCarLoaction(string lp)
 {
     if(lp.empty()||!verifyLicensePlate(lp))
-        return Location();
+        return new Location();
 
-    return this->myCars[lp]->getLocation();
+    return this->myCars[lp]->getLocation().get();
 }
 
 float CarManagementService::getTraveledDistance(string lp)

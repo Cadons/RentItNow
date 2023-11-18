@@ -18,7 +18,7 @@ public:
     User();  // Default constructor
     User(const std::string& name, const std::string& surname, const std::string& address,
          const std::string& creditCard, const std::string& drivingLicense);
-
+    User(User& user);
     std::string getName() const;
     void setName(const std::string &newName);
     std::string getSurname() const;

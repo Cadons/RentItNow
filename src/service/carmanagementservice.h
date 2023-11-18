@@ -31,7 +31,7 @@ public:
     Car* getCar(string licensePlate) override;
 
     bool checkAviability(string lp) override;
-    Location getCarLoaction(string lp) override;
+    Location* getCarLoaction(string lp) override;
     float getTraveledDistance(string lp) override;
     int getNextServiceTime(string lp) override;//return how many km remains for the next service
     void putCarInMaintenance(string ls) override;

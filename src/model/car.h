@@ -3,7 +3,9 @@
 
 #include "cartype.h"
 #include "location.h"
+#include "user.h"
 
+#include <memory>
 #include <stdlib.h>
 #include <string>
 
@@ -35,22 +37,24 @@ public:
     string toString();
     float getTotalKm() const;
 
-    Location getLocation() const;
+    std::shared_ptr<Location> getLocation() const;
     void setLocation(const Location &newLocation);
     void setTotalKm(float newTotalKm);
 
 
     void setKmBeforeService(int newKmBeforeService);
 
+    void setOwner(User* user);
+    User* getOwner();
 private:
     string name="";
     string brand="";
     string licensePlate="";
     int kmBeforeService=1500;
     const CarType type;
-    Location location;
+    std::shared_ptr<Location> location;
     float totalKm=0;
-
+    std::unique_ptr<User> owner=nullptr;
 
 
 

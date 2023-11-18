@@ -50,6 +50,10 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         usermanager.h usermanager.cpp usermanager.ui
         userform.h userform.cpp userform.ui
         tables/usermodel.h tables/usermodel.cpp
+        service/rentingservice.h service/rentingservice.cpp
+        service/IRentingService.h
+        model/circle.h model/circle.cpp
+        model/rentresearchresult.h model/rentresearchresult.cpp
 
 
 

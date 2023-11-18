@@ -86,3 +86,8 @@ User::User(const std::string& name, const std::string& surname, const std::strin
 
 }
 
+User::User(User &user): name(user.name), surname(user.surname), address(user.address), creditCard(user.creditCard), drivingLicense(user.drivingLicense)
+{
+
+}
+
