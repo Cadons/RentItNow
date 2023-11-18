@@ -35,7 +35,7 @@ bool UsersRepository::save(std::map<std::string, std::shared_ptr<User> > data)
 {
     QJsonObject jsonObject;
     for (auto it = data.begin(); it!=data.end();++it) {
-        jsonObject[QString::fromStdString(it->second->getId())]=convertObjectToJson(*it->second);
+        jsonObject[QString::fromStdString(it->second->getDrivingLicense())]=convertObjectToJson(*it->second);
     }
     QJsonDocument jsonDoc(jsonObject);
     std::string myJson=jsonDoc.toJson(QJsonDocument::Compact).toStdString();
@@ -45,7 +45,6 @@ bool UsersRepository::save(std::map<std::string, std::shared_ptr<User> > data)
 QJsonObject UsersRepository::convertObjectToJson(User obj)
 {
     QJsonObject jsonObject;
-    jsonObject["id"] = QString::fromStdString(obj.getId());
     jsonObject["name"] = QString::fromStdString(obj.getName());
     jsonObject["surname"] = QString::fromStdString(obj.getSurname());
     jsonObject["address"] = QString::fromStdString(obj.getAddress());
@@ -60,13 +59,12 @@ std::shared_ptr<User> UsersRepository::convertJsonToObject(std::string &obj)
     QJsonDocument jsonDoc = QJsonDocument::fromJson(QString::fromStdString(obj).toUtf8());
     QJsonObject jsonObject=jsonDoc.object();
     std::shared_ptr<User> user;
-    std::string id = jsonObject["id"].toString().toStdString();
     std::string name = jsonObject["name"].toString().toStdString();
     std::string surname = jsonObject["surname"].toString().toStdString();
     std::string address = jsonObject["address"].toString().toStdString();
     std::string creditCard = jsonObject["creditCard"].toString().toStdString();
     std::string drivingLicense = jsonObject["drivingLicense"].toString().toStdString();
-    return std::make_shared<User>(id, name, surname, address,creditCard, drivingLicense);
+    return std::make_shared<User>(name, surname, address,creditCard, drivingLicense);
 }
 
 UsersRepository &UsersRepository::getInstance()

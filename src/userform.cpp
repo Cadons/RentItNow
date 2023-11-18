@@ -114,7 +114,7 @@ void UserForm::on_addUser_pushButton_clicked()
             newUser->setCreditCard(creditCard.toStdString());
             newUser->setDrivingLicense(drivingLicense.toStdString());
 
-            update=userManager.update(userToEdit->getId(),newUser);
+            update=userManager.update(userToEdit->getDrivingLicense(),newUser);
 
             if(update)
             {

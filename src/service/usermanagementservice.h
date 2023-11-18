@@ -20,7 +20,7 @@ public:
 public:
     std::map<std::string, std::shared_ptr<User> > getUsers() override;
     User *getUser(std::string id) override;
-    bool validateDrivingLicense(std::string dl, std::string  id) override;
+    bool validateDrivingLicense(std::string dl) override;
     int usersCount() override;
     void clearAll();
     static UserManagementService& getInstance();

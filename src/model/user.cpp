@@ -50,15 +50,10 @@ void User::setDrivingLicense(const std::string &newDrivingLicense)
     drivingLicense = newDrivingLicense;
 }
 
-std::string User::getId()const
-{
-    return id;
-}
 
 std::string User::toString()
 {
     std::string result = "User {";
-    result += "id: " + id + ", ";
     result += "name: " + name + ", ";
     result += "surname: " + surname + ", ";
     result += "address: " + address + ", ";
@@ -69,7 +64,7 @@ std::string User::toString()
 
 bool User::operator ==(const User &other) const
 {
-    return id == other.id &&
+    return
            name == other.name &&
            surname == other.surname &&
            address == other.address &&
@@ -79,10 +74,6 @@ bool User::operator ==(const User &other) const
 
 
 
-void User::setId(const std::string &newId)
-{
-    id = newId;
-}
 
 User::User()
 {
@@ -92,13 +83,6 @@ User::User()
 User::User(const std::string& name, const std::string& surname, const std::string& address,
            const std::string& creditCard, const std::string& drivingLicense)
     : name(name), surname(surname), address(address), creditCard(creditCard), drivingLicense(drivingLicense) {
-    id=QUuid::createUuid().toString().toStdString();
+
 }
 
-User::User(const std::string &id, const std::string &name, const std::string &surname, const std::string &address, const std::string &creditCard, const std::string &drivingLicense) : id(id),
-    name(name),
-    surname(surname),
-    address(address),
-    creditCard(creditCard),
-    drivingLicense(drivingLicense)
-{}

@@ -10,9 +10,9 @@ bool UserManagementService::add(User *newObject)
     if(newObject!=nullptr)
     {
         if(!this->myUsers.empty())
-            if (!validateDrivingLicense(newObject->getDrivingLicense(), newObject->getId())||myUsers.count(newObject->getId())>0)
+            if (!validateDrivingLicense(newObject->getDrivingLicense()))
                 return false;
-        this->myUsers[newObject->getId()] = std::make_shared<User>(*newObject);
+        this->myUsers[newObject->getDrivingLicense()] = std::make_shared<User>(*newObject);
 
         return UsersRepository::getInstance().save(myUsers);
     }else{
@@ -23,13 +23,22 @@ bool UserManagementService::add(User *newObject)
 bool UserManagementService::update(std::string key, User *updatedObject)
 {
     //search the object by licencse plate
-    if(key!=""&&updatedObject!=nullptr&&myUsers[key]!=nullptr&&key==updatedObject->getId()&&myUsers.count(key)>0)
+    if(updatedObject==nullptr)
+        return false;
+    if(key!=""&&myUsers[key]!=nullptr&&myUsers.count(key)>0)
     {
-        if(updatedObject->getDrivingLicense()!=""&&validateDrivingLicense(updatedObject->getDrivingLicense(), updatedObject->getId()))
-            myUsers[key].get()->setDrivingLicense(updatedObject->getDrivingLicense());
-        else
-            return false;
+        if(updatedObject->getDrivingLicense()!=""&&myUsers[key]->getDrivingLicense()!=updatedObject->getDrivingLicense())
+        {
+            if(validateDrivingLicense(updatedObject->getDrivingLicense()))
+            {
+                myUsers.erase(key);//Delete old element
 
+                 return add(updatedObject);
+            }
+            else
+                return false;
+
+        }
         if(updatedObject->getName()!="")
             myUsers[key].get()->setName(updatedObject->getName());
         if(updatedObject->getSurname()!="")
@@ -50,7 +59,7 @@ bool UserManagementService::update(std::string key, User *updatedObject)
 bool UserManagementService::remove(User *objectToDelete)
 {
     if(objectToDelete!=nullptr&&myUsers.size()>0){
-        myUsers.erase(objectToDelete->getId());
+        myUsers.erase(objectToDelete->getDrivingLicense());
         return UsersRepository::getInstance().save(myUsers);
     }
     return false;
@@ -76,14 +85,13 @@ User *UserManagementService::getUser(std::string id)
         return this->myUsers[id].get();
 }
 
-bool UserManagementService::validateDrivingLicense(std::string dl, std::string id)
+bool UserManagementService::validateDrivingLicense(std::string dl)
 {
     for (const auto& it : myUsers) {
-        if(it.second->getId()!=id)
-        {
+
             if(it.second->getDrivingLicense()==dl)
                 return false;
-        }
+
 
     }
     return true;
