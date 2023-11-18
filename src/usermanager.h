@@ -6,19 +6,28 @@
 #include <QWidget>
 
 namespace Ui {
-class Usermanager;
+class UserManager;
 }
 
-class Usermanager : public QWidget
+class UserManager : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit Usermanager(QWidget *parent = nullptr);
-    ~Usermanager();
+    explicit UserManager(QWidget *parent = nullptr);
+    ~UserManager();
+
+private slots:
+    void on_UserManagment_currentChanged(int index);
+
+    void on_edit_pushButton_clicked();
+
+    void on_delete_pushButton_clicked();
+
+    void on_usersTable_clicked(const QModelIndex &index);
 
 private:
-    Ui::Usermanager *ui;
+    Ui::UserManager *ui;
 
     IUserManager& userManager;
     UserForm* newForm;

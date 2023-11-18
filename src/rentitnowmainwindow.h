@@ -2,6 +2,7 @@
 #define RENTITNOWMAINWINDOW_H
 
 #include "carmanager.h"
+#include "usermanager.h"
 #include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
@@ -24,9 +25,13 @@ private slots:
     void on_actionI_m_User_triggered();
 
 
+    void on_actionUserManagment_triggered();
+
 private:
     Ui::RentItNowMainWindow *ui;
-    CarManager* carManager;
+    CarManager* carManager=nullptr;
+    UserManager* userManager=nullptr;
+
     bool isBoss;
 };
 #endif // RENTITNOWMAINWINDOW_H

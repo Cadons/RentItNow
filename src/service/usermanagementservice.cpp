@@ -2,7 +2,12 @@
 #include "../repository/usersrepository.h"
 UserManagementService::UserManagementService()
 {
+    this->myUsers=UsersRepository::getInstance().load();
+}
 
+UserManagementService::~UserManagementService()
+{
+    UsersRepository::getInstance().save(myUsers);
 }
 
 bool UserManagementService::add(User *newObject)
@@ -25,28 +30,33 @@ bool UserManagementService::update(std::string key, User *updatedObject)
     //search the object by licencse plate
     if(updatedObject==nullptr)
         return false;
-    if(key!=""&&myUsers[key]!=nullptr&&myUsers.count(key)>0)
+    if(key!="")
     {
-        if(updatedObject->getDrivingLicense()!=""&&myUsers[key]->getDrivingLicense()!=updatedObject->getDrivingLicense())
+        if(updatedObject->getDrivingLicense().empty())
+            return false;
+        if(key!=updatedObject->getDrivingLicense())
         {
             if(validateDrivingLicense(updatedObject->getDrivingLicense()))
             {
-                myUsers.erase(key);//Delete old element
-
-                 return add(updatedObject);
+                if(remove(key))//Delete old element
+                    return add(updatedObject);
+                return false;
             }
             else
                 return false;
 
         }
-        if(updatedObject->getName()!="")
-            myUsers[key].get()->setName(updatedObject->getName());
-        if(updatedObject->getSurname()!="")
-            myUsers[key].get()->setSurname(updatedObject->getSurname());
-        if(updatedObject->getAddress()!="")
-            myUsers[key].get()->setAddress(updatedObject->getAddress());
-        if(updatedObject->getCreditCard()!="")
-            myUsers[key].get()->setCreditCard(updatedObject->getCreditCard());
+        if(myUsers.count(key)>0){
+            if(updatedObject->getName()!="")
+                myUsers[key].get()->setName(updatedObject->getName());
+            if(updatedObject->getSurname()!="")
+                myUsers[key].get()->setSurname(updatedObject->getSurname());
+            if(updatedObject->getAddress()!="")
+                myUsers[key].get()->setAddress(updatedObject->getAddress());
+            if(updatedObject->getCreditCard()!="")
+                myUsers[key].get()->setCreditCard(updatedObject->getCreditCard());
+
+        }
 
         return UsersRepository::getInstance().save(myUsers);
 
@@ -89,8 +99,8 @@ bool UserManagementService::validateDrivingLicense(std::string dl)
 {
     for (const auto& it : myUsers) {
 
-            if(it.second->getDrivingLicense()==dl)
-                return false;
+        if(it.second->getDrivingLicense()==dl)
+            return false;
 
 
     }

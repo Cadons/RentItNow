@@ -49,6 +49,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         service/IUserManager.h
         usermanager.h usermanager.cpp usermanager.ui
         userform.h userform.cpp userform.ui
+        tables/usermodel.h tables/usermodel.cpp
 
 
 

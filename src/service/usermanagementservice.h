@@ -7,6 +7,7 @@ class UserManagementService : public IUserManager
 {
 private:
     UserManagementService();
+    ~UserManagementService();
     std::map<std::string, std::shared_ptr<User> > myUsers;
 
     // ICrud interface

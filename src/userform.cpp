@@ -10,11 +10,14 @@ UserForm::UserForm(QWidget *parent) :
     ui->setupUi(this);
     editMode=false;
     userToEdit=nullptr;
+
 }
 
 UserForm::UserForm(User *user, QTabWidget *tabMenu, QWidget *parent)  :  QWidget(parent),
     ui(new Ui::UserForm),
-    userManager(UserManagementService::getInstance())
+    userManager(UserManagementService::getInstance()),
+    tabMenu(tabMenu),
+    userToEdit(user)
 
 {
     ui->setupUi(this);
@@ -105,7 +108,8 @@ void UserForm::on_addUser_pushButton_clicked()
         if(ret==QMessageBox::Yes)
         {
             bool update=false;
-            newUser=userToEdit;
+            newUser=new User();
+            std::string dl=userToEdit->getDrivingLicense();
             newUser->setName(name.toStdString());
             newUser->setSurname(surname.toStdString());
 
@@ -114,12 +118,12 @@ void UserForm::on_addUser_pushButton_clicked()
             newUser->setCreditCard(creditCard.toStdString());
             newUser->setDrivingLicense(drivingLicense.toStdString());
 
-            update=userManager.update(userToEdit->getDrivingLicense(),newUser);
+            update=userManager.update(dl,newUser);
 
             if(update)
             {
                 ret=QMessageBox::information(this, "RentItNow",
-                                               "Car modified",
+                                               "User modified",
                                                QMessageBox::Ok,
                                                QMessageBox::Ok);
                 if(ret==QMessageBox::Ok)

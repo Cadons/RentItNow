@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Usermanager</class>
- <widget class="QWidget" name="Usermanager">
+ <class>UserManager</class>
+ <widget class="QWidget" name="UserManager">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
-    <widget class="QTabWidget" name="CarManagment">
+    <widget class="QTabWidget" name="UserManagment">
      <property name="autoFillBackground">
       <bool>false</bool>
      </property>

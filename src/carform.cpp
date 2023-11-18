@@ -46,7 +46,6 @@ CarForm::CarForm(QWidget *parent) :
 CarForm::~CarForm()
 {
     delete ui;
-    delete carToEdit;
     delete tabMenu;
     if(carToEdit!=nullptr)
         delete carToEdit;
@@ -105,6 +104,7 @@ void CarForm::on_addCar_pushButton_clicked()
                 if(ret==QMessageBox::Ok)
                 {
                     cleanForm();
+
                 }
             }else{
                 QMessageBox::critical(this, "RentItNow",
@@ -126,7 +126,6 @@ void CarForm::on_addCar_pushButton_clicked()
             newCar=carToEdit;
             newCar->setName(carName.toStdString());
             newCar->setBrand(carBrand.toStdString());
-            newCar->setLicensePlate(lp.toStdString());
 
             update=carManager.update(lp.toStdString(),newCar);
 
