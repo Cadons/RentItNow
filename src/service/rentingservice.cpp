@@ -22,9 +22,11 @@ Location RentingService::getLocation(string lp)
     return returnLocation;
 }
 
-RentResearchResult &RentingService::requestRent(string dl, int passegers, CarType type, Location start, Location destination)
+RentResearchResult &RentingService::requestRent(string dl, int passegers, CarTypeName type, Location start, Location destination)
 {
 //TODO
+    auto tmp=  RentResearchResult();
+    return tmp;
 }
 
 bool RentingService::rent(string lp, string dl)

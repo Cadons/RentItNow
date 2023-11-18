@@ -91,6 +91,7 @@ void RentItNowMainWindow::on_actionI_m_User_triggered()
 
         ui->verticalLayout->addWidget(this->rentForm.get());
     }
+    rentForm->updateUsers();
     rentForm->show();
     ui->actionCar_Managment->setDisabled(true);
     ui->actionUserManagment->setDisabled(true);

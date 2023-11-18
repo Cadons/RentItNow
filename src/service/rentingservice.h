@@ -11,7 +11,7 @@ private:
     // IRentingService interface
 public:
     Location getLocation(string lp) override;
-    RentResearchResult &requestRent(string dl, int passegers, CarType type, Location start, Location destination) override;
+    RentResearchResult &requestRent(string dl, int passegers, CarTypeName type, Location start, Location destination) override;
     bool rent(string lp, string dl) override;
     bool release(string lp, string dl) override;
     static RentingService& getInstance();
