@@ -11,10 +11,10 @@ UserManager::UserManager(QWidget *parent) :
     userManager(UserManagementService::getInstance())
 {
     ui->setupUi(this);
-    newForm=new UserForm(this);
+    newForm=std::make_unique<UserForm>(this);
 
     ui->UserManagment->setCurrentIndex(0);
-    ui->UserManagment->addTab(newForm,"Add new user");
+    ui->UserManagment->addTab(newForm.get(),"Add new user");
     updateTable();
 
 }
@@ -49,11 +49,10 @@ void UserManager::on_edit_pushButton_clicked()
         if( ui->UserManagment->count()==2)
         {
 
-            UserForm* editCarForm=new UserForm(this->selecteUser, ui->UserManagment,this);
-            ui->UserManagment->addTab(editCarForm,QString("Edit User"));
+            this->editForm=std::make_unique<UserForm>(this->selecteUser, ui->UserManagment,this);
+            ui->UserManagment->addTab(editForm.get(),QString("Edit User"));
             ui->UserManagment->setCurrentIndex(2);
 
-            editForm=editCarForm;
         }else{
             QMessageBox::warning(this, "RentItNow",
                                  "You are editing an other user, close the tab and retry!",

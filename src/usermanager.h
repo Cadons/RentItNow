@@ -30,8 +30,8 @@ private:
     Ui::UserManager *ui;
 
     IUserManager& userManager;
-    UserForm* newForm;
-    UserForm* editForm;
+    std::unique_ptr<UserForm> newForm;
+    std::unique_ptr<UserForm> editForm;
     User* selecteUser;
     void updateTable();
 

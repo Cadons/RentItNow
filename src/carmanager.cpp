@@ -17,15 +17,14 @@ CarManager::CarManager(QWidget *parent) :
     ui->CarManagment->setCurrentIndex(0);
     ui->CarManagment->addTab(addCarForm,"Add new car");
 
-    newForm=addCarForm;
+    newForm=std::make_unique<CarForm>(addCarForm);
     updateTable();
 }
 
 CarManager::~CarManager()
 {
     delete ui;
-    delete newForm;
-    delete editForm;
+
 }
 
 
@@ -55,7 +54,7 @@ void CarManager::on_edit_pushButton_clicked()
             ui->CarManagment->addTab(editCarForm,QString("Edit Car"));
             ui->CarManagment->setCurrentIndex(2);
 
-            editForm=editCarForm;
+            this->editForm=std::make_unique<CarForm>(editCarForm);
         }else{
             QMessageBox::warning(this, "RentItNow",
                                  "You are editing an other car, close the tab and retry!",

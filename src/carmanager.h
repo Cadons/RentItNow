@@ -33,8 +33,8 @@ private slots:
 private:
     Ui::CarManager *ui;
     ICarManager& carManager;
-    CarForm* newForm;
-    CarForm* editForm;
+    std::unique_ptr<CarForm> newForm;
+    std::unique_ptr<CarForm> editForm;
     Car* selectedCar;
     void updateTable();
 
