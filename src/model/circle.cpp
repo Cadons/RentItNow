@@ -17,7 +17,7 @@ CircleType Circle::getName() const
     return name;
 }
 
-std::string Circle::toString()
+std::string Circle::toString()const
 {
     switch (name) {
     case CircleType::INNER:

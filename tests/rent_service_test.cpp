@@ -1,7 +1,9 @@
 
 #include <gtest/gtest.h>
 #include <gmock/gmock-matchers.h>
+#include "model/deluxecar.h"
 #include "model/ecocar.h"
+#include "model/midclasscar.h"
 #include "rent_service_test.h"
 #include "service/rentingservice.h"
 #include <QDebug>
@@ -33,7 +35,7 @@ TEST_F(RentItNowTest_RENT_SERVICE, GET_LOCATION)
 
 
 }
-TEST_F(RentItNowTest_RENT_SERVICE, REQUEST_RENT)
+TEST_F(RentItNowTest_RENT_SERVICE, RENT)
 {
     Car* car=new EcoCar("testCar","testBrand","1234");
     CarManagementService::getInstance().add(car);
@@ -65,5 +67,53 @@ TEST_F(RentItNowTest_RENT_SERVICE, RELEASE_RENT)
     EXPECT_FALSE(RentingService::getInstance().release("","ABCD123456"));
     EXPECT_TRUE(RentingService::getInstance().release("1234","ABCD123456"));
     EXPECT_EQ(nullptr,CarManagementService::getInstance().getCar("1234")->getOwner());
+
+}
+TEST_F(RentItNowTest_RENT_SERVICE, REQUEST_RENT)
+{
+    Car* car=new EcoCar("testCar","testBrand","1234e");
+    car->setLocation(SimpleTown::getInstance().getOuter()->getChild());
+    CarManagementService::getInstance().add(car);
+    CarManagementService::getInstance().add(new MidClassCar("testCar2","testBrand2","1234m"));
+    CarManagementService::getInstance().add(new MidClassCar("testCar4","testBrand4","1234m2"));
+    CarManagementService::getInstance().add(new EcoCar("testCar5","testBrand5","1234e2"));
+
+    Location from;
+    from.setPosition(nullptr);
+    Location to;
+
+    EXPECT_EQ(nullptr,RentingService::getInstance().requestRent(0,CarTypeName::ECO,from,to).get());
+    to.setPosition(nullptr);
+    EXPECT_EQ(nullptr,RentingService::getInstance().requestRent(0,CarTypeName::ECO,from,to).get());
+    EXPECT_EQ(nullptr,RentingService::getInstance().requestRent(100,CarTypeName::ECO,from,to).get());
+
+    to.setPosition(SimpleTown::getInstance().getOuter());
+    from.setPosition(SimpleTown::getInstance().getInner());
+    EXPECT_EQ(nullptr,RentingService::getInstance().requestRent(100,CarTypeName::ECO,from,to).get());
+
+    EXPECT_EQ(std::numeric_limits<float>::max(),RentingService::getInstance().requestRent(1,CarTypeName::DELUXE,from,to).get()->getWaitTime());
+    CarManagementService::getInstance().add(new DeluxeCar("testCar3","testBrand3","1234d"));
+
+    EXPECT_EQ(std::numeric_limits<float>::min(),RentingService::getInstance().requestRent(1,CarTypeName::ECO,from,to).get()->getWaitTime());
+    EXPECT_EQ(3,RentingService::getInstance().requestRent(1,CarTypeName::ECO,from,to).get()->getCars()[0].getHopsDistance());
+    from.setPosition(SimpleTown::getInstance().getInner());
+    to.setPosition(SimpleTown::getInstance().getInner()->getParent());
+    EXPECT_EQ(2,RentingService::getInstance().requestRent(1,CarTypeName::ECO,from,to).get()->getCars()[0].getHopsDistance());
+    from.setPosition(SimpleTown::getInstance().getInner());
+    to.setPosition(SimpleTown::getInstance().getInner());
+    EXPECT_EQ(1,RentingService::getInstance().requestRent(1,CarTypeName::ECO,from,to).get()->getCars()[0].getHopsDistance());
+    EXPECT_EQ(5,RentingService::getInstance().requestRent(1,CarTypeName::ECO,from,to).get()->getCars()[0].getKmDistance());
+    EXPECT_EQ(5,RentingService::getInstance().requestRent(1,CarTypeName::ECO,from,to).get()->getCars()[0].getPrice());
+    EXPECT_EQ(25,RentingService::getInstance().requestRent(1,CarTypeName::DELUXE,from,to).get()->getCars()[0].getPrice());
+    EXPECT_EQ(10,RentingService::getInstance().requestRent(1,CarTypeName::MID_CLASS,from,to).get()->getCars()[0].getPrice());
+    from.setPosition(SimpleTown::getInstance().getInner()->getParent());
+    to.setPosition(SimpleTown::getInstance().getOuter());
+    EXPECT_EQ(2,RentingService::getInstance().requestRent(2,CarTypeName::ECO,from,to).get()->getCars().size());
+
+    EXPECT_EQ( CarManagementService::getInstance().getCar("1234e"),RentingService::getInstance().requestRent(2,CarTypeName::ECO,from,to).get()->getCars()[0].getCar());
+
+    EXPECT_EQ( CarManagementService::getInstance().getCar("1234e2"),RentingService::getInstance().requestRent(2,CarTypeName::ECO,from,to).get()->getCars()[1].getCar());
+
+    EXPECT_NE(CarManagementService::getInstance().getCar("1234e2"),RentingService::getInstance().requestRent(2,CarTypeName::ECO,from,to).get()->getCars()[0].getCar());
 
 }

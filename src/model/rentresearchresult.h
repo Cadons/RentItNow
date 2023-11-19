@@ -5,13 +5,44 @@
 #include "car.h"
 #include <memory>
 #include <vector>
-struct ResultItem{
-    const std::shared_ptr<Car> car;
-    const float price;
-    const int hopsDistance;
-    const float kmDistance;
-};
+class ResultItem {
+private:
+    Car* car;
+    float price;
+    int hopsDistance;
+    float kmDistance;
 
+public:
+    // Constructor
+    ResultItem(Car* car, float price, int hopsDistance)
+        : car(car), price(price), hopsDistance(hopsDistance), kmDistance(hopsDistance * 5) {}
+
+    // Accessors (const methods to access member variables)
+    Car* getCar() const {
+        return car;
+    }
+
+    float getPrice() const {
+        return price;
+    }
+
+    int getHopsDistance() const {
+        return hopsDistance;
+    }
+
+    float getKmDistance() const {
+        return kmDistance;
+    }
+
+    // Overload the less-than operator for sorting
+    bool operator<(const ResultItem& other) const {
+        if (price == other.price) {
+            // If prices are equal, compare based on kmDistance
+            return kmDistance < other.kmDistance;
+        }
+        return price < other.price;
+    }
+};
 class RentResearchResult
 {
 public:
@@ -24,7 +55,7 @@ public:
 private:
 
 
-    const vector<ResultItem> cars;
+    vector<ResultItem> cars;
     const float waitTime=-1;
 
 };

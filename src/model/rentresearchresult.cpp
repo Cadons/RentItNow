@@ -1,4 +1,5 @@
 #include "rentresearchresult.h"
+#include <algorithm>
 
 RentResearchResult::RentResearchResult()
 {
@@ -17,4 +18,6 @@ vector<ResultItem> RentResearchResult::getCars() const
 
 RentResearchResult::RentResearchResult(const vector<ResultItem> &cars, float waitTime) : cars(cars),
     waitTime(waitTime)
-{}
+{
+    std::sort(this->cars.begin(),this->cars.end());
+}

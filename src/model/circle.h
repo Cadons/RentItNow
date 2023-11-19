@@ -17,7 +17,7 @@ public:
     Circle(CircleType name);
     Circle(Circle* circle);
     CircleType getName() const;
-    std::string toString();
+    std::string toString() const;
 
     std::shared_ptr<Circle> setChild(const std::shared_ptr<Circle> &newChild);
 
