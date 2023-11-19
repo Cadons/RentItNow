@@ -9,25 +9,25 @@ using namespace testing;
 
 TEST(RentItNowTest_USER_REPOSITORY, ConvertUserToJSON)
 {
-    User testUser("John", "Doe", "123 Main St", "1234-5678-9012-3456", "ABCD123456");
+    User* testUser=new User("John", "Doe", "123 Main St", "1234-5678-9012-3456", "ABCD123456");
     auto obj = UsersRepository::getInstance().convertObjectToJson(testUser);
 
     std::string expectedJson=R"({"address":"123 Main St","creditCard":"1234-5678-9012-3456","drivingLicense":"ABCD123456","name":"John","surname":"Doe"})";
     EXPECT_EQ(expectedJson, RepositoryUtils::convertJsonToString(obj));
-
+    delete testUser;
 }
 TEST(RentItNowTest_USER_REPOSITORY, FromJSONToUser)
 {
-    User testUser("John", "Doe", "123 Main St", "1234-5678-9012-3456", "ABCD123456");
+    User* testUser=new User("John", "Doe", "123 Main St", "1234-5678-9012-3456", "ABCD123456");
     auto obj = UsersRepository::getInstance().convertObjectToJson(testUser);
     std::string expectedJson=R"({"address":"123 Main St","creditCard":"1234-5678-9012-3456","drivingLicense":"ABCD123456","name":"John","surname":"Doe"})";
 
     auto convertedUser = UsersRepository::getInstance().convertJsonToObject(expectedJson);
-    EXPECT_TRUE(testUser==*convertedUser);
+    EXPECT_TRUE(*testUser==*convertedUser);
 
     // Check if the strings are equal
-    EXPECT_EQ(expectedJson,  RepositoryUtils::convertJsonToString(UsersRepository::getInstance().convertObjectToJson(*convertedUser)));
-
+    EXPECT_EQ(expectedJson,  RepositoryUtils::convertJsonToString(UsersRepository::getInstance().convertObjectToJson(convertedUser.get())));
+    delete testUser;
 }
 
 TEST(RentItNowTest_CAR_REPOSITORY, SaveUser)

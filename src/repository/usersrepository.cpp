@@ -35,21 +35,21 @@ bool UsersRepository::save(std::map<std::string, std::shared_ptr<User> > data)
 {
     QJsonObject jsonObject;
     for (auto it = data.begin(); it!=data.end();++it) {
-        jsonObject[QString::fromStdString(it->second->getDrivingLicense())]=convertObjectToJson(*it->second);
+        jsonObject[QString::fromStdString(it->second->getDrivingLicense())]=convertObjectToJson(it->second.get());
     }
     QJsonDocument jsonDoc(jsonObject);
     std::string myJson=jsonDoc.toJson(QJsonDocument::Compact).toStdString();
     return RepositoryUtils::writeOnFile(myJson,this->path);
 }
 
-QJsonObject UsersRepository::convertObjectToJson(User obj)
+QJsonObject UsersRepository::convertObjectToJson(User* obj)
 {
     QJsonObject jsonObject;
-    jsonObject["name"] = QString::fromStdString(obj.getName());
-    jsonObject["surname"] = QString::fromStdString(obj.getSurname());
-    jsonObject["address"] = QString::fromStdString(obj.getAddress());
-    jsonObject["creditCard"] = QString::fromStdString(obj.getCreditCard());
-    jsonObject["drivingLicense"] = QString::fromStdString(obj.getDrivingLicense());
+    jsonObject["name"] = QString::fromStdString(obj->getName());
+    jsonObject["surname"] = QString::fromStdString(obj->getSurname());
+    jsonObject["address"] = QString::fromStdString(obj->getAddress());
+    jsonObject["creditCard"] = QString::fromStdString(obj->getCreditCard());
+    jsonObject["drivingLicense"] = QString::fromStdString(obj->getDrivingLicense());
 
     return jsonObject;
 }

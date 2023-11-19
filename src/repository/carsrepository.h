@@ -19,7 +19,7 @@ private:
 public:
     std::map<std::string, std::shared_ptr<Car>> load() override;
     bool save(std::map<std::string, std::shared_ptr<Car>> data) override;
-    QJsonObject convertObjectToJson(Car obj) override;
+    QJsonObject convertObjectToJson(Car* obj) override;
     std::shared_ptr<Car> convertJsonToObject(string &obj) override;
     static CarsRepository& getInstance();
 

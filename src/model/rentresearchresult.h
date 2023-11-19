@@ -3,6 +3,7 @@
 
 
 #include "car.h"
+#include <list>
 #include <memory>
 #include <vector>
 class ResultItem {
@@ -11,11 +12,13 @@ private:
     float price;
     int hopsDistance;
     float kmDistance;
+    std::list<Location> path;
+
 
 public:
     // Constructor
-    ResultItem(Car* car, float price, int hopsDistance)
-        : car(car), price(price), hopsDistance(hopsDistance), kmDistance(hopsDistance * 5) {}
+    ResultItem(Car* car, float price, int hopsDistance, std::list<Location> path )
+        : car(car), price(price), hopsDistance(hopsDistance), kmDistance(hopsDistance * 5), path(path) {}
 
     // Accessors (const methods to access member variables)
     Car* getCar() const {
@@ -33,7 +36,9 @@ public:
     float getKmDistance() const {
         return kmDistance;
     }
-
+    std::list<Location> getPath() const {
+        return path;
+    }
     // Overload the less-than operator for sorting
     bool operator<(const ResultItem& other) const {
         if (price == other.price) {

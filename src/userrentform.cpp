@@ -1,9 +1,11 @@
 #include "userrentform.h"
+#include "threadworker.h"
 #include "model/circle.h"
 #include "service/rentingservice.h"
 #include "ui_userrentform.h"
 #include "service/usermanagementservice.h"
 #include <QMessageBox>
+#include <QThread>
 UserRentForm::UserRentForm(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::UserRentForm)
@@ -133,18 +135,24 @@ void UserRentForm::on_search_pushButton_clicked()
 
         if (result.get()->getWaitTime() == std::numeric_limits<float>::min()) {
             if (!result.get()->getResults().empty()) {
-                std::string tmp="Distance(Km):" + roundToTwoDecimals(result.get()->getResults()[0].getKmDistance()) +"\nPrice:" + roundToTwoDecimals(result.get()->getResults()[0].getPrice());
+                std::string tmp="Car:"+result.get()->getResults()[0].getCar()->getBrand()+" "+result.get()->getResults()[0].getCar()->getName()+"\nLicense Plate:"+result.get()->getResults()[0].getCar()->getLicensePlate()+"\nDistance:" + roundToTwoDecimals(result.get()->getResults()[0].getKmDistance()) +" Km\nPrice:" + roundToTwoDecimals(result.get()->getResults()[0].getPrice());
                 outputText = QString::fromStdString(tmp);
                 this->bestLp=result.get()->getResults()[0].getCar()->getLicensePlate();
                 this->bestPrice=result.get()->getResults()[0].getPrice();
+                this->path=result.get()->getResults()[0].getPath();
+                ui->rent_pushButton->setDisabled(false);
             } else {
                 outputText = QString::fromStdString("No cars available");
+                ui->rent_pushButton->setDisabled(true);
+
             }
         } else {
             if (result.get()->getWaitTime() != std::numeric_limits<float>::max())
                 outputText = QString::fromStdString("No cars available, waiting time:" + roundToTwoDecimals(result.get()->getWaitTime()));
             else
                 outputText = QString::fromStdString("There is no car that respects the requirements!");
+            ui->rent_pushButton->setDisabled(true);
+
         }
         ui->output->setText(outputText);
 
@@ -162,6 +170,48 @@ void UserRentForm::on_search_pushButton_clicked()
                                   "Select a user!",
                                   QMessageBox::Ok,
                                   QMessageBox::Ok);
+        ui->rent_pushButton->setDisabled(true);
+
     }
+}
+
+
+void UserRentForm::on_rent_pushButton_clicked()
+{
+    if(!bestLp.empty()&&bestPrice>0)
+    {
+        bool rentOk=RentingService::getInstance().rent(bestLp,selectedUser->getDrivingLicense(),bestPrice);
+        if(rentOk)
+        {
+            QThread* thread=new QThread();
+            ThreadWorker* worker=new ThreadWorker(bestLp,selectedUser->getDrivingLicense(),path);
+            worker->moveToThread(thread);
+            connect( worker, &ThreadWorker::error, this, [](){});
+            connect( thread, &QThread::started, worker, &ThreadWorker::process);
+            connect( worker, &ThreadWorker::finished, thread, &QThread::quit);
+            connect( worker, &ThreadWorker::finished, worker, &ThreadWorker::deleteLater);
+            connect( thread, &QThread::finished, thread, &QThread::deleteLater);
+            thread->start();
+            QMessageBox::information(this, "RentItNow",
+                                  "Operation completed",
+                                  QMessageBox::Ok,
+                                  QMessageBox::Ok);
+
+        }else{
+            QMessageBox::critical(this, "RentItNow",
+                                  "Operation failed",
+                                  QMessageBox::Ok,
+                                  QMessageBox::Ok);
+        }
+    }
+}
+
+void UserRentForm::rent_car_simulation(std::string lp)
+{
+    qDebug() << "Using the car" << QThread::currentThread();
+    QThread::sleep(10);
+    qDebug() << "Car in releasing" << QThread::currentThread();
+    emit releaseCar();
+
 }
 

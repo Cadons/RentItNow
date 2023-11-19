@@ -21,3 +21,4 @@ RentResearchResult::RentResearchResult(const vector<ResultItem> &cars, float wai
 {
     std::sort(this->results.begin(),this->results.end());
 }
+

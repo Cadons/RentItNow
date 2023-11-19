@@ -1,5 +1,6 @@
 #include "carmanagementservice.h"
 #include "../repository/carsrepository.h"
+#include "../service/rentingservice.h"
 CarManagementService &CarManagementService::getInstance()
 {
     static CarManagementService instance; // Guaranteed to be initialized only once.
@@ -16,7 +17,7 @@ bool CarManagementService::add(Car* newObject)
                 return false;
         this->myCars[newObject->getLicensePlate()] = std::make_shared<Car>(*newObject);
 
-      return CarsRepository::getInstance().save(myCars);
+      return save();
     }else{
             return false;
     }
@@ -43,8 +44,9 @@ bool CarManagementService::update(string lp, Car* updatedObject)
             }
             if(updatedObject->getTotalKm()>myCars[lp]->getTotalKm())
             myCars[lp].get()->setTotalKm(updatedObject->getTotalKm());
-
-           return CarsRepository::getInstance().save(myCars);
+            if(updatedObject->getOwner()!=myCars[lp]->getOwner())
+            myCars[lp].get()->setOwner(updatedObject->getOwner());
+            return save();
 
 
     }else{
@@ -64,7 +66,7 @@ bool CarManagementService::remove(Car* objectToDelete)
     if(objectToDelete!=nullptr&&myCars.size()>0){
 
             myCars.erase(objectToDelete->getLicensePlate());
-        return CarsRepository::getInstance().save(myCars);
+        return save();
 
 
     }
@@ -133,12 +135,23 @@ int CarManagementService::getNextServiceTime(string lp)
     return(this->myCars[lp]->getKmBeforeService()/ this->myCars[lp]->getSpeed());
 }
 
-void CarManagementService::putCarInMaintenance(string lp)
+bool CarManagementService::putCarInMaintenance(string lp)
 {
     if(lp.empty())
-        return;
+        return false;
+
     if(this->carsInMaintaince.count(lp)==0&&myCars.count(lp)>0&&myCars.at(lp)->needService())
-    this->carsInMaintaince[lp]=24;
+    {
+
+        if(RentingService::getInstance().getMyBank()->pay(300))
+        { this->carsInMaintaince[lp]=24;
+        return true;
+        }else{
+        return false;
+      }
+    }
+    return false;
+
 }
 
 void CarManagementService::updateMaintenanceStatus()
@@ -163,7 +176,11 @@ void CarManagementService::moveCar(string lp, Location& to)
     Car* car=getCar(lp);
     if(car!=nullptr){
         //TODO add km calc
+        car->updateDistanceTraveled(5);
         car->setLocation(to);
+        if(car->needService())
+            putCarInMaintenance(lp);
+        save();
     }
 
 }
@@ -174,6 +191,18 @@ int CarManagementService::getMaintenanceTime(string lp)
         return this->carsInMaintaince.at(lp);
     else
         return 0;
+}
+
+bool CarManagementService::save()
+{
+    return CarsRepository::getInstance().save(myCars);
+
+}
+
+bool CarManagementService::load()
+{
+    this->myCars=CarsRepository::getInstance().load();
+    return true;
 }
 
 CarManagementService::CarManagementService()

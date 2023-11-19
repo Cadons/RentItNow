@@ -1,6 +1,7 @@
 #ifndef USERRENTFORM_H
 #define USERRENTFORM_H
 
+#include "model/location.h"
 #include "model/user.h"
 #include <QWidget>
 
@@ -23,12 +24,18 @@ private slots:
 
     void on_search_pushButton_clicked();
 
+    void on_rent_pushButton_clicked();
+public slots:
+    void rent_car_simulation(std::string lp);
+signals:
+    void releaseCar();
+
 private:
     Ui::UserRentForm *ui;
     User* selectedUser;
     std::string bestLp;
     float bestPrice;
-
+    std::list<Location> path;
 };
 
 #endif // USERRENTFORM_H

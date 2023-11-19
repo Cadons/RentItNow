@@ -42,7 +42,7 @@ bool CarsRepository::save(std::map<string, std::shared_ptr<Car> > data)
 
     QJsonObject jsonObject;
     for (auto it = data.begin(); it!=data.end();++it) {
-        jsonObject[QString::fromStdString(it->second->getLicensePlate())]=convertObjectToJson(*it->second);
+        jsonObject[QString::fromStdString(it->second->getLicensePlate())]=convertObjectToJson(it->second.get());
     }
     QJsonDocument jsonDoc(jsonObject);
     std::string myJson=jsonDoc.toJson(QJsonDocument::Compact).toStdString();
@@ -51,18 +51,18 @@ bool CarsRepository::save(std::map<string, std::shared_ptr<Car> > data)
 
 
 
-QJsonObject CarsRepository::convertObjectToJson(Car obj)
+QJsonObject CarsRepository::convertObjectToJson(Car* obj)
 {
     QJsonObject jsonCar;
-    jsonCar["name"]=QString::fromStdString(obj.getName());
-    jsonCar["brand"]=QString::fromStdString(obj.getBrand());
-    jsonCar["lp"]=QString::fromStdString(obj.getLicensePlate());
-    jsonCar["type"]=QString::fromStdString(obj.getTypeName());
-    jsonCar["km_to_service"]=obj.getKmBeforeService();
-    jsonCar["total_km"]=obj.getTotalKm();
-    jsonCar["location"]=QString::fromStdString(obj.getLocation().get()->getPosition()->toString());
-    if(obj.getOwner()!=nullptr)
-        jsonCar["owner"]=QString::fromStdString(obj.getOwner()->getDrivingLicense());
+    jsonCar["name"]=QString::fromStdString(obj->getName());
+    jsonCar["brand"]=QString::fromStdString(obj->getBrand());
+    jsonCar["lp"]=QString::fromStdString(obj->getLicensePlate());
+    jsonCar["type"]=QString::fromStdString(obj->getTypeName());
+    jsonCar["km_to_service"]=obj->getKmBeforeService();
+    jsonCar["total_km"]=obj->getTotalKm();
+    jsonCar["location"]=QString::fromStdString(obj->getLocation().get()->getPosition()->toString());
+    if(obj->getOwner()!=nullptr)
+        jsonCar["owner"]=QString::fromStdString(obj->getOwner()->getDrivingLicense());
     else
         jsonCar["owner"]=QString("null");
     return jsonCar;

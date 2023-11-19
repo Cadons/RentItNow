@@ -10,17 +10,18 @@
 using namespace testing;
 TEST(RentItNowTest_CAR_REPOSITORY, ConvertCarToJSON)
 {
-    EcoCar car("testCar", "testBrand", "1234");
+    EcoCar* car=new EcoCar("testCar", "testBrand", "1234");
 
     auto obj = CarsRepository::getInstance().convertObjectToJson(car);
     std::string expectedJson = "{\"brand\":\"testBrand\",\"km_to_service\":1500,\"location\":\"Inner\",\"lp\":\"1234\",\"name\":\"testCar\",\"owner\":\"null\",\"total_km\":0,\"type\":\"ECO\"}";
 
     EXPECT_EQ(expectedJson, RepositoryUtils::convertJsonToString(obj));
+    delete car;
 }
 
 TEST(RentItNowTest_CAR_REPOSITORY, FromJSONToCar)
 {
-    EcoCar car("testCar", "testBrand", "1234");
+    EcoCar* car=new EcoCar("testCar", "testBrand", "1234");
 
     auto obj = CarsRepository::getInstance().convertObjectToJson(car);
     std::string expectedJson = "{\"brand\":\"testBrand\",\"km_to_service\":1500,\"location\":\"Inner\",\"lp\":\"1234\",\"name\":\"testCar\",\"owner\":\"null\",\"total_km\":0,\"type\":\"ECO\"}";
@@ -29,10 +30,12 @@ TEST(RentItNowTest_CAR_REPOSITORY, FromJSONToCar)
     auto convertedCar = CarsRepository::getInstance().convertJsonToObject(expectedJson);
 
     // Check if the two cars are equal
-    EXPECT_TRUE(car==*convertedCar);
+    EXPECT_TRUE(*car==*convertedCar);
 
     // Check if the strings are equal
-    EXPECT_EQ(expectedJson,  RepositoryUtils::convertJsonToString(CarsRepository::getInstance().convertObjectToJson(*convertedCar)));
+    EXPECT_EQ(expectedJson,  RepositoryUtils::convertJsonToString(CarsRepository::getInstance().convertObjectToJson(convertedCar.get())));
+    delete car;
+
 }
 TEST(RentItNowTest_CAR_REPOSITORY, SaveFile)
 {

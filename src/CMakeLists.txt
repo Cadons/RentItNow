@@ -56,6 +56,12 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         model/rentresearchresult.h model/rentresearchresult.cpp
         model/simpletown.h model/simpletown.cpp
         userrentform.h userrentform.cpp userrentform.ui
+        model/bank.h model/bank.cpp
+
+        threadworker.h threadworker.cpp
+        carserviceworker.h carserviceworker.cpp
+
+
 
 
 

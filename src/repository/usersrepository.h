@@ -13,7 +13,7 @@ private:
 public:
     std::map<std::string, std::shared_ptr<User>> load() override;
     bool save(std::map<std::string, std::shared_ptr<User> > data) override;
-    QJsonObject convertObjectToJson(User obj) override;
+    QJsonObject convertObjectToJson(User* obj) override;
     std::shared_ptr<User> convertJsonToObject(std::string &obj) override;
     static UsersRepository& getInstance();
 

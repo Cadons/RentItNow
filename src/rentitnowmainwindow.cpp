@@ -1,6 +1,8 @@
 #include "rentitnowmainwindow.h"
 #include "./ui_rentitnowmainwindow.h"
 #include "carmanager.h"
+#include "carserviceworker.h"
+#include "qthread.h"
 #include "userrentform.h"
 
 RentItNowMainWindow::RentItNowMainWindow(QWidget *parent)
@@ -14,6 +16,16 @@ RentItNowMainWindow::RentItNowMainWindow(QWidget *parent)
     ui->actionCar_Managment->setDisabled(true);
     ui->actionUserManagment->setDisabled(true);
     on_actionI_m_User_triggered();
+    QThread* thread = new QThread();
+    CarServiceWorker* carService = new CarServiceWorker();
+    carService->moveToThread(thread);
+    connect( carService, &CarServiceWorker::error, this, [](){});
+    connect( thread, &QThread::started, carService, &CarServiceWorker::process);
+    connect( carService, &CarServiceWorker::finished, thread, &QThread::quit);
+    connect( carService, &CarServiceWorker::finished, carService, &CarServiceWorker::deleteLater);
+    connect( thread, &QThread::finished, thread, &QThread::deleteLater);
+    thread->start();
+
 }
 
 RentItNowMainWindow::~RentItNowMainWindow()

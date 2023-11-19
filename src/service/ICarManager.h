@@ -17,8 +17,10 @@ public:
     virtual Location* getCarLoaction(string lp)=0;
     virtual float getTraveledDistance(string lp)=0;
     virtual int getNextServiceTime(string lp)=0;//return how many km remains for the next service
-    virtual void putCarInMaintenance(string ls)=0;
+    virtual bool putCarInMaintenance(string ls)=0;
     virtual void updateMaintenanceStatus()=0;//this method should be performed every tick (1 tick=1 hour in the simulation)
+    virtual bool save()=0;
+    virtual bool load()=0;
 
 };
 #endif // ICARMANAGER_H

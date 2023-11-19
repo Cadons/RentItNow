@@ -5,12 +5,14 @@
 #include <QDebug>
 RentingService::RentingService():city(SimpleTown::getInstance())
 {
-
+    this->myBank=std::make_unique<Bank>();
 }
 
-int RentingService::calculatePath(const Circle* position,const Circle* from, const Circle* destination, const bool taken=false)
+int RentingService::calculatePath(std::shared_ptr<Circle> position,const std::shared_ptr<Circle> from, const std::shared_ptr<Circle> destination, const bool taken=false)
 {
-
+    Location pos;
+    pos.setPosition(position);
+    tmpPath.push_back(pos);
     qDebug()<<"car should pass the "+QString::fromStdString(position->toString())+" circle";
     bool startTripWithTheUser=taken;
     if(from==position&&position==destination)
@@ -39,23 +41,28 @@ int RentingService::calculatePath(const Circle* position,const Circle* from, con
         if(destination->getName()>position->getName())
         {
 
-            return 1+calculatePath(position->getParent().get(),from,destination,startTripWithTheUser);
+            return 1+calculatePath(position->getParent(),from,destination,startTripWithTheUser);
         }
         else{
-            return 1+calculatePath(position->getChild().get(), from,destination,startTripWithTheUser);
+            return 1+calculatePath(position->getChild(), from,destination,startTripWithTheUser);
         }
     }else{
         if(from->getName()>position->getName())
         {
 
-            return 1+calculatePath(position->getParent().get(),from,destination,startTripWithTheUser);
+            return 1+calculatePath(position->getParent(),from,destination,startTripWithTheUser);
         }
         else{
-            return 1+calculatePath(position->getChild().get(), from,destination,startTripWithTheUser);
+            return 1+calculatePath(position->getChild(), from,destination,startTripWithTheUser);
         }
     }
 
 
+}
+
+Bank*RentingService::getMyBank() const
+{
+    return myBank.get();
 }
 
 SimpleTown &RentingService::getCity() const
@@ -99,9 +106,10 @@ std::unique_ptr<RentResearchResult> RentingService::requestRent( int passegers, 
     {
         if(CarManagementService::getInstance().checkAviability(car->getLicensePlate()))
         {
-            int distance=1+calculatePath(car->getLocation()->getPosition().get(),start.getPosition().get(),destination.getPosition().get());
+            int distance=1+calculatePath(car->getLocation()->getPosition(),start.getPosition(),destination.getPosition());
 
-            results.push_back(ResultItem(car,distance*5*car->getPrice(),distance));
+            results.push_back(ResultItem(car,distance*5*car->getPrice(),distance, tmpPath));
+            tmpPath.clear();
         }else{
 
             if(CarManagementService::getInstance().getMaintenanceTime(car->getLicensePlate())>0)
@@ -120,19 +128,28 @@ std::unique_ptr<RentResearchResult> RentingService::requestRent( int passegers, 
 
 }
 
-bool RentingService::rent(string lp, string dl)
+bool RentingService::rent(string lp, string dl, float price)
 {
     Car* car= CarManagementService::getInstance(). getCar(lp);
     User* user= UserManagementService::getInstance(). getUser(dl);
     if(car!=nullptr&&user!=nullptr){
-        car->setOwner(user);
-        return true;
+        if(CarManagementService::getInstance().checkAviability(lp))
+        {
+            this->myBank->deposit(price);
+
+            car->setOwner(user);
+
+            qDebug()<<"Payment completed";
+            return CarManagementService::getInstance().save();
+        }
+
     }
     return false;
 }
 
 bool RentingService::release(string lp, string dl)
 {
+
     if(lp.empty()||dl.empty()|| CarManagementService::getInstance(). getCar(lp)==nullptr|| CarManagementService::getInstance(). getCar(lp)->getOwner()->getDrivingLicense()!=dl){
         return false;
     }
