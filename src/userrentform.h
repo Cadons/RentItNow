@@ -26,6 +26,8 @@ private slots:
 private:
     Ui::UserRentForm *ui;
     User* selectedUser;
+    std::string bestLp;
+    float bestPrice;
 
 };
 

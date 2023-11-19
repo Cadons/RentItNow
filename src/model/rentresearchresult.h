@@ -50,12 +50,12 @@ public:
     RentResearchResult(const vector<ResultItem> &cars, float waitTime);
     float getWaitTime() const;
 
-    vector<ResultItem> getCars() const;
+    vector<ResultItem> getResults() const;
 
 private:
 
 
-    vector<ResultItem> cars;
+    vector<ResultItem> results;
     const float waitTime=-1;
 
 };

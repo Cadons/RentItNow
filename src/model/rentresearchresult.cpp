@@ -11,13 +11,13 @@ float RentResearchResult::getWaitTime() const
     return waitTime;
 }
 
-vector<ResultItem> RentResearchResult::getCars() const
+vector<ResultItem> RentResearchResult::getResults() const
 {
-    return cars;
+    return results;
 }
 
-RentResearchResult::RentResearchResult(const vector<ResultItem> &cars, float waitTime) : cars(cars),
+RentResearchResult::RentResearchResult(const vector<ResultItem> &cars, float waitTime) : results(cars),
     waitTime(waitTime)
 {
-    std::sort(this->cars.begin(),this->cars.end());
+    std::sort(this->results.begin(),this->results.end());
 }

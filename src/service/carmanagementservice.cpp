@@ -137,7 +137,7 @@ void CarManagementService::putCarInMaintenance(string lp)
 {
     if(lp.empty())
         return;
-    if(this->carsInMaintaince.count(lp)==0)
+    if(this->carsInMaintaince.count(lp)==0&&myCars.count(lp)>0&&myCars.at(lp)->needService())
     this->carsInMaintaince[lp]=24;
 }
 
@@ -166,6 +166,14 @@ void CarManagementService::moveCar(string lp, Location& to)
         car->setLocation(to);
     }
 
+}
+
+int CarManagementService::getMaintenanceTime(string lp)
+{
+    if(this->carsInMaintaince.count(lp)>0)
+        return this->carsInMaintaince.at(lp);
+    else
+        return 0;
 }
 
 CarManagementService::CarManagementService()

@@ -13,6 +13,10 @@ int RentingService::calculatePath(const Circle* position,const Circle* from, con
 
     qDebug()<<"car should pass the "+QString::fromStdString(position->toString())+" circle";
     bool startTripWithTheUser=taken;
+    if(from==position&&position==destination)
+    {
+        return 0;
+    }
     if(taken)
     {
 
@@ -25,21 +29,32 @@ int RentingService::calculatePath(const Circle* position,const Circle* from, con
     {
         if(position==from){
             startTripWithTheUser=true;
+
         }
     }
 
 
-    if(destination->getName()>position->getName())
+    if(startTripWithTheUser)
     {
-        return 1+calculatePath(position->getParent().get(),from,destination,startTripWithTheUser);
+        if(destination->getName()>position->getName())
+        {
+
+            return 1+calculatePath(position->getParent().get(),from,destination,startTripWithTheUser);
+        }
+        else{
+            return 1+calculatePath(position->getChild().get(), from,destination,startTripWithTheUser);
+        }
+    }else{
+        if(from->getName()>position->getName())
+        {
+
+            return 1+calculatePath(position->getParent().get(),from,destination,startTripWithTheUser);
+        }
+        else{
+            return 1+calculatePath(position->getChild().get(), from,destination,startTripWithTheUser);
+        }
     }
-    if(position==destination)
-    {
-        return calculatePath(position,from,destination,startTripWithTheUser);
-    }
-    else{
-        return 1+calculatePath(position->getChild().get(), from,destination,startTripWithTheUser);
-    }
+
 
 }
 
@@ -79,7 +94,7 @@ std::unique_ptr<RentResearchResult> RentingService::requestRent( int passegers, 
 
     }
     vector<ResultItem> results;
-
+    float waitTime=std::numeric_limits<float>::max();
     for(const auto& car : cars)
     {
         if(CarManagementService::getInstance().checkAviability(car->getLicensePlate()))
@@ -87,11 +102,16 @@ std::unique_ptr<RentResearchResult> RentingService::requestRent( int passegers, 
             int distance=1+calculatePath(car->getLocation()->getPosition().get(),start.getPosition().get(),destination.getPosition().get());
 
             results.push_back(ResultItem(car,distance*5*car->getPrice(),distance));
+        }else{
+
+            if(CarManagementService::getInstance().getMaintenanceTime(car->getLicensePlate())>0)
+                if(CarManagementService::getInstance().getMaintenanceTime(car->getLicensePlate())<waitTime)//get the minumum wait time
+                    waitTime=CarManagementService::getInstance().getMaintenanceTime(car->getLicensePlate());
         }
     }
     if(results.empty())
     {
-        output=std::make_unique<RentResearchResult>(results,std::numeric_limits<float>::max());//no cars return a big time to indicate that there is no car in the stock
+        output=std::make_unique<RentResearchResult>(results,waitTime);
     }else{
         output=std::make_unique<RentResearchResult>(results,std::numeric_limits<float>::min());//no cars return a big time to indicate that there is no car in the stock
 
