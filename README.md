@@ -61,3 +61,6 @@ If no car is available, the software presents the user an expected waiting time.
 ### Tools
 - You can use any IDE you like
 - Feel free to browse internet for help or drop us an email
+
+## Demo
+In the demo folder is a working Windows application with the data already loaded.

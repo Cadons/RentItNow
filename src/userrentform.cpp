@@ -148,7 +148,7 @@ void UserRentForm::on_search_pushButton_clicked()
                 if (!result.get()->getResults().empty()) {
 
 
-                    std::string tmp="Car:"+result.get()->getResults()[0].getCar()->getBrand()+" "+result.get()->getResults()[0].getCar()->getName()+"\nLicense Plate:"+result.get()->getResults()[0].getCar()->getLicensePlate()+"\nDistance:" + roundToTwoDecimals(result.get()->getResults()[0].getKmDistance()) +" Km\nPrice:" + roundToTwoDecimals(result.get()->getResults()[0].getPrice());
+                    std::string tmp="Car:"+result.get()->getResults()[0].getCar()->getBrand()+" "+result.get()->getResults()[0].getCar()->getName()+"\nLicense Plate:"+result.get()->getResults()[0].getCar()->getLicensePlate()+"\nDistance:" + roundToTwoDecimals(result.get()->getResults()[0].getKmDistance()) +" Km\nPrice: " + roundToTwoDecimals(result.get()->getResults()[0].getPrice())+" $";
                     outputText = QString::fromStdString(tmp);
                     this->bestLp=result.get()->getResults()[0].getCar()->getLicensePlate();
                     this->bestPrice=result.get()->getResults()[0].getPrice();
