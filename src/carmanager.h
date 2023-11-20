@@ -30,6 +30,8 @@ private slots:
 
     void on_delete_pushButton_clicked();
 
+    void on_refresh_pushButton_clicked();
+
 private:
     Ui::CarManager *ui;
     ICarManager& carManager;

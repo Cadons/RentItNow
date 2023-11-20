@@ -70,6 +70,13 @@
        <item>
         <widget class="QTableView" name="carsTable"/>
        </item>
+       <item>
+        <widget class="QPushButton" name="refresh_pushButton">
+         <property name="text">
+          <string>Refresh</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
     </widget>

@@ -125,3 +125,9 @@ void CarManager::updateTable()
     ui->carsTable->show();
 }
 
+
+void CarManager::on_refresh_pushButton_clicked()
+{
+    updateTable();
+}
+

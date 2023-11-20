@@ -153,12 +153,14 @@ bool RentingService::rent(string lp, string dl, float price)
 {
     Car* car= CarManagementService::getInstance(). getCar(lp);
     User* user= UserManagementService::getInstance(). getUser(dl);
-    for(const auto& car: CarManagementService::getInstance().getCars())
-    {
-        if(user==car.second->getOwner())
-            return false;//user can rent only a car at a time
-    }
+
   if(car!=nullptr&&user!=nullptr){
+        for(const auto& item: CarManagementService::getInstance().getCars())
+        {
+            if(item.second->getOwner()!=nullptr)
+                if(user->getDrivingLicense()==item.second->getOwner()->getDrivingLicense())
+                    return false;//user can rent only a car at a time
+        }
         if(CarManagementService::getInstance().checkAviability(lp))
         {
            this->myBank->deposit(price);

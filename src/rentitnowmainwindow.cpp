@@ -4,7 +4,6 @@
 #include "carserviceworker.h"
 #include "qthread.h"
 #include "userrentform.h"
-
 RentItNowMainWindow::RentItNowMainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::RentItNowMainWindow)
@@ -119,6 +118,8 @@ void RentItNowMainWindow::on_actionI_m_User_triggered()
     ui->actionUserManagment->setDisabled(true);
     ui->menuI_am->setTitle(QString("I am a User"));
 }
+
+
 
 
 

@@ -28,6 +28,7 @@ private slots:
 
     void on_actionUserManagment_triggered();
 
+
 private:
     Ui::RentItNowMainWindow *ui;
     std::unique_ptr<CarManager> carManager=nullptr;
