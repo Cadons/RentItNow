@@ -125,7 +125,10 @@ std::unique_ptr<RentResearchResult> RentingService::requestRent( int passegers, 
                 results.push_back(ResultItem(car,distance*5*car->getPrice(),distance, tmpPath));
                 tmpPath.clear();
             }else{
-                waitTime=24;
+
+                waitTime=CarManagementService::getInstance().getMaintenanceTime(car->getLicensePlate());
+                if(waitTime==-1)
+                    waitTime=24;
             }
 
         }else{
@@ -150,15 +153,20 @@ bool RentingService::rent(string lp, string dl, float price)
 {
     Car* car= CarManagementService::getInstance(). getCar(lp);
     User* user= UserManagementService::getInstance(). getUser(dl);
-    if(car!=nullptr&&user!=nullptr){
+    for(const auto& car: CarManagementService::getInstance().getCars())
+    {
+        if(user==car.second->getOwner())
+            return false;//user can rent only a car at a time
+    }
+  if(car!=nullptr&&user!=nullptr){
         if(CarManagementService::getInstance().checkAviability(lp))
         {
-            this->myBank->deposit(price);
- BankRepository::getInstance().save(this->myBank.get());
+           this->myBank->deposit(price);
+            BankRepository::getInstance().save(this->myBank.get());
             car->setOwner(user);
 
             qDebug()<<"Payment completed";
-            return CarManagementService::getInstance().save();
+              return CarManagementService::getInstance().save();
         }
 
     }

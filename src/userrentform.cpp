@@ -1,6 +1,4 @@
 #include "userrentform.h"
-#include "qdatetime.h"
-#include "rentitnowmainwindow.h"
 #include "threadworker.h"
 #include "model/circle.h"
 #include "service/rentingservice.h"
@@ -202,10 +200,10 @@ void UserRentForm::on_rent_pushButton_clicked()
 {
     if(!bestLp.empty()&&bestPrice>0)
     {
-        bool rentOk=RentingService::getInstance().rent(bestLp,selectedUser->getDrivingLicense(),bestPrice);
+       bool rentOk=RentingService::getInstance().rent(bestLp,selectedUser->getDrivingLicense(),bestPrice);
         if(rentOk)
         {
-            QThread* thread=new QThread();
+             QThread* thread=new QThread();
             ThreadWorker* worker=new ThreadWorker(bestLp,selectedUser->getDrivingLicense(),path);
             worker->moveToThread(thread);
             connect( worker, &ThreadWorker::error, this, [](){});

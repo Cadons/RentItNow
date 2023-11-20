@@ -4,8 +4,10 @@ bool Bank::deposit(float payment)
 {
     if(payment>0){
         balance += payment;
-
+ return true;
     }
+    return false;
+
 }
 
 bool Bank::pay(float payment)

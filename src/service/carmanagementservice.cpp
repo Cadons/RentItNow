@@ -102,13 +102,15 @@ Car *CarManagementService::getCar(string licensePlate)
 bool CarManagementService::checkAviability(string lp)
 {
 
-
+    if(this->myCars.at(lp)->needService())
+        return false;
     if(this->myCars.count(lp)==0)
         return false;
     if(this->myCars.at(lp)->getOwner()!=nullptr)
         return false;
     if(this->carsInMaintaince.count(lp)==0)
         return true;
+
     return false;
 }
 
@@ -141,7 +143,7 @@ bool CarManagementService::putCarInMaintenance(string lp)
 
     if(lp.empty())
         return false;
-    qDebug()<<lp+" in Maintenance";
+
     if(this->carsInMaintaince.count(lp)==0&&myCars.count(lp)>0&&myCars.at(lp)->needService())
     {
 
@@ -149,6 +151,7 @@ bool CarManagementService::putCarInMaintenance(string lp)
         {
                 mutex.lock();
             this->carsInMaintaince[lp]=24;
+                qDebug()<<lp+" in Maintenance";
                 mutex.unlock();
         return true;
         }else{
@@ -212,7 +215,7 @@ int CarManagementService::getMaintenanceTime(string lp)
     if(this->carsInMaintaince.count(lp)>0)
         return this->carsInMaintaince.at(lp);
     else
-        return 0;
+        return -1;
 }
 
 bool CarManagementService::save()
