@@ -10,7 +10,7 @@ RentingService::RentingService():city(SimpleTown::getInstance())
     this->myBank=   BankRepository::getInstance().load();
     if(this->myBank==nullptr)
     {
-         this->myBank=   std::make_unique<Bank>();
+        this->myBank=   std::make_unique<Bank>();
     }
 
 
@@ -133,9 +133,14 @@ std::unique_ptr<RentResearchResult> RentingService::requestRent( int passegers, 
 
         }else{
 
-            if(CarManagementService::getInstance().getMaintenanceTime(car->getLicensePlate())>0)
+            if(CarManagementService::getInstance().getMaintenanceTime(car->getLicensePlate())!=-1)
+            {
                 if(CarManagementService::getInstance().getMaintenanceTime(car->getLicensePlate())<waitTime)//get the minumum wait time
                     waitTime=CarManagementService::getInstance().getMaintenanceTime(car->getLicensePlate());
+            }   else if(car->needService()&&waitTime>24)
+                {
+                    waitTime=24;
+                }
         }
     }
     if(results.empty())
@@ -154,7 +159,7 @@ bool RentingService::rent(string lp, string dl, float price)
     Car* car= CarManagementService::getInstance(). getCar(lp);
     User* user= UserManagementService::getInstance(). getUser(dl);
 
-  if(car!=nullptr&&user!=nullptr){
+    if(car!=nullptr&&user!=nullptr){
         for(const auto& item: CarManagementService::getInstance().getCars())
         {
             if(item.second->getOwner()!=nullptr)
@@ -163,12 +168,12 @@ bool RentingService::rent(string lp, string dl, float price)
         }
         if(CarManagementService::getInstance().checkAviability(lp))
         {
-           this->myBank->deposit(price);
+            this->myBank->deposit(price);
             BankRepository::getInstance().save(this->myBank.get());
             car->setOwner(user);
 
             qDebug()<<"Payment completed";
-              return CarManagementService::getInstance().save();
+            return CarManagementService::getInstance().save();
         }
 
     }

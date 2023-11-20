@@ -101,11 +101,11 @@ Car *CarManagementService::getCar(string licensePlate)
 
 bool CarManagementService::checkAviability(string lp)
 {
-
-    if(this->myCars.at(lp)->needService())
-        return false;
     if(this->myCars.count(lp)==0)
         return false;
+    if(this->myCars.at(lp)->needService())
+        return false;
+
     if(this->myCars.at(lp)->getOwner()!=nullptr)
         return false;
     if(this->carsInMaintaince.count(lp)==0)

@@ -7,7 +7,6 @@
 #include <memory>
 #include <QMutex>
 #include "../model/location.h"
-#include "qlcdnumber.h"
 
 class CarManagementService: public ICarManager
 {

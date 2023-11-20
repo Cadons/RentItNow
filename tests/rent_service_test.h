@@ -3,13 +3,15 @@
 #include "gtest/gtest.h"
 #include "service/usermanagementservice.h"
 #include "service/carmanagementservice.h"
-
+#include "service/rentingservice.h"
 
 class RentItNowTest_RENT_SERVICE : public ::testing::Test {
 protected:
     void SetUp() override {
         UserManagementService::getInstance().clearAll();
         CarManagementService::getInstance().clearAll();
+        RentingService::getInstance().getMyBank()->deposit(1000);
+
     }
 
     void TearDown() override {

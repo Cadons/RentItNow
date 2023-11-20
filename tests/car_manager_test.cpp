@@ -93,7 +93,7 @@ TEST_F(RentItNowTest_CAR_MANAGER, NEXT_SERVICE_TIME)
     myCar->updateDistanceTraveled(500);
     EXPECT_TRUE(CarManagementService::getInstance().update("ABC1234",myCar));
     EXPECT_EQ(66, CarManagementService::getInstance().getNextServiceTime("ABC1234"));
-
+  delete myCar;
 }
 TEST_F(RentItNowTest_CAR_MANAGER, GET_TRAVELLED_DISTANCE)
 {
@@ -109,11 +109,14 @@ TEST_F(RentItNowTest_CAR_MANAGER, GET_TRAVELLED_DISTANCE)
 TEST_F(RentItNowTest_CAR_MANAGER, CAR_IN_MAINTENANCE)
 {
     EcoCar* myCar=new EcoCar("testCar", "testBrand","ABC1234");
-    myCar->updateDistanceTraveled(1500);
     CarManagementService::getInstance().add(myCar);
+
     EXPECT_TRUE(CarManagementService::getInstance().checkAviability("ABC1234"));
 
-    CarManagementService::getInstance().putCarInMaintenance(myCar->getLicensePlate());
+    CarManagementService::getInstance().getCar(myCar->getLicensePlate())->updateDistanceTraveled(1500);
+    EXPECT_FALSE(CarManagementService::getInstance().checkAviability("ABC1234"));
+
+    EXPECT_TRUE(CarManagementService::getInstance().putCarInMaintenance(myCar->getLicensePlate()));
 
     EXPECT_FALSE(CarManagementService::getInstance().checkAviability("ABC1234"));
     for (int i = 0; i < 25; i++) {
@@ -123,5 +126,5 @@ TEST_F(RentItNowTest_CAR_MANAGER, CAR_IN_MAINTENANCE)
     EXPECT_TRUE(CarManagementService::getInstance().checkAviability("ABC1234"));
 
     EXPECT_FALSE(CarManagementService::getInstance().checkAviability("ABC1236"));
-
+    delete myCar;
 }
