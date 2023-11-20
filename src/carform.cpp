@@ -41,11 +41,13 @@ CarForm::CarForm(QWidget *parent) :
     ui->setupUi(this);
     carToEdit=nullptr;
     editMode=false;
+    tabMenu=nullptr;
 
 }
 CarForm::~CarForm()
 {
     delete ui;
+    if(tabMenu!=nullptr)
     delete tabMenu;
     if(carToEdit!=nullptr)
         delete carToEdit;

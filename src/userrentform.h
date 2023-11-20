@@ -3,6 +3,7 @@
 
 #include "model/location.h"
 #include "model/user.h"
+#include "qlcdnumber.h"
 #include <QWidget>
 
 namespace Ui {
@@ -14,7 +15,7 @@ class UserRentForm : public QWidget
     Q_OBJECT
 
 public:
-    explicit UserRentForm(QWidget *parent = nullptr);
+    explicit UserRentForm(QLCDNumber *bankValueLCD=nullptr,QWidget *parent = nullptr);
     ~UserRentForm();
  void updateUsers();
 private slots:
@@ -36,6 +37,7 @@ private:
     std::string bestLp;
     float bestPrice;
     std::list<Location> path;
+    QLCDNumber* bankValueLCD;
 };
 
 #endif // USERRENTFORM_H

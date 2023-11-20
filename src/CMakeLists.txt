@@ -60,6 +60,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
 
         threadworker.h threadworker.cpp
         carserviceworker.h carserviceworker.cpp
+        repository/bankrepository.h repository/bankrepository.cpp
+        repository/ISingleDataRepository.h
+
 
 
 

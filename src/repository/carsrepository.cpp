@@ -93,9 +93,10 @@ std::shared_ptr<Car> CarsRepository::convertJsonToObject(string &obj)
 
     }
     User* owner;
-    if(jsonObject["owner"].toString().toStdString()!="null")
+    //When recover cars from db reset all rents, uncomment to recover rented car in the past sessions
+   /* if(jsonObject["owner"].toString().toStdString()!="null")
         owner=UserManagementService::getInstance().getUser(jsonObject["owner"].toString().toStdString());
-    else
+    else*/
         owner=nullptr;
     //Can be improved with chain of responsability
     if(type=="ECO")

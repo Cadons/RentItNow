@@ -9,6 +9,7 @@ class RentingService: public IRentingService
 {
 private:
     RentingService();
+    virtual ~RentingService();
     SimpleTown& city;
     int calculatePath(std::shared_ptr<Circle>position, const std::shared_ptr<Circle> from, const std::shared_ptr<Circle> destination, const bool taken);
     std::unique_ptr<Bank> myBank;

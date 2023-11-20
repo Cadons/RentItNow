@@ -1,4 +1,6 @@
 #include "userrentform.h"
+#include "qdatetime.h"
+#include "rentitnowmainwindow.h"
 #include "threadworker.h"
 #include "model/circle.h"
 #include "service/rentingservice.h"
@@ -6,8 +8,12 @@
 #include "service/usermanagementservice.h"
 #include <QMessageBox>
 #include <QThread>
-UserRentForm::UserRentForm(QWidget *parent) :
+#include <iostream>
+#include <ostream>
+
+UserRentForm::UserRentForm(QLCDNumber* bankValueLCD,QWidget *parent) :
     QWidget(parent),
+    bankValueLCD(bankValueLCD),
     ui(new Ui::UserRentForm)
 {
     ui->setupUi(this);
@@ -25,6 +31,8 @@ UserRentForm::UserRentForm(QWidget *parent) :
     for (int i = 0; i < circleNames.size(); ++i) {
         ui->to_comboBox->addItem(circleNames[i], QVariant::fromValue(i));
     }
+    srand (time(NULL));
+
 }
 
 UserRentForm::~UserRentForm()
@@ -64,6 +72,8 @@ void UserRentForm::updateUsers()
 {
     ui->whoAmI_comboBox->clear();
     ui->whoAmI_comboBox->addItem(QString("Select user"));
+    if(bankValueLCD!=nullptr)
+        bankValueLCD->display(RentingService::getInstance().getMyBank()->getBalance());
 
     for(const auto& it: UserManagementService::getInstance().getUsers())
     {
@@ -75,6 +85,8 @@ void UserRentForm::updateUsers()
 
 void UserRentForm::on_search_pushButton_clicked()
 {
+    if(bankValueLCD!=nullptr)
+        bankValueLCD->display(RentingService::getInstance().getMyBank()->getBalance());
     if(ui->passagers_spinBox->value()>0&&selectedUser!=nullptr)
     {
         this->bestLp="";
@@ -83,7 +95,6 @@ void UserRentForm::on_search_pushButton_clicked()
         Location from;
         Location to;
         CarTypeName type;
-        qDebug()<<ui->from_comboBox->currentData().toInt();
 
 
         switch (ui->from_comboBox->currentData().toInt()) {
@@ -132,32 +143,42 @@ void UserRentForm::on_search_pushButton_clicked()
         auto roundToTwoDecimals = [](float value) {
             return QString::number(std::round(value * 100.0) / 100.0, 'f', 2).toStdString();
         };
+        if(result!=nullptr){
+            if (result.get()->getWaitTime() == std::numeric_limits<float>::min()) {
+                if (!result.get()->getResults().empty()) {
 
-        if (result.get()->getWaitTime() == std::numeric_limits<float>::min()) {
-            if (!result.get()->getResults().empty()) {
-                std::string tmp="Car:"+result.get()->getResults()[0].getCar()->getBrand()+" "+result.get()->getResults()[0].getCar()->getName()+"\nLicense Plate:"+result.get()->getResults()[0].getCar()->getLicensePlate()+"\nDistance:" + roundToTwoDecimals(result.get()->getResults()[0].getKmDistance()) +" Km\nPrice:" + roundToTwoDecimals(result.get()->getResults()[0].getPrice());
-                outputText = QString::fromStdString(tmp);
-                this->bestLp=result.get()->getResults()[0].getCar()->getLicensePlate();
-                this->bestPrice=result.get()->getResults()[0].getPrice();
-                this->path=result.get()->getResults()[0].getPath();
-                ui->rent_pushButton->setDisabled(false);
+
+                    std::string tmp="Car:"+result.get()->getResults()[0].getCar()->getBrand()+" "+result.get()->getResults()[0].getCar()->getName()+"\nLicense Plate:"+result.get()->getResults()[0].getCar()->getLicensePlate()+"\nDistance:" + roundToTwoDecimals(result.get()->getResults()[0].getKmDistance()) +" Km\nPrice:" + roundToTwoDecimals(result.get()->getResults()[0].getPrice());
+                    outputText = QString::fromStdString(tmp);
+                    this->bestLp=result.get()->getResults()[0].getCar()->getLicensePlate();
+                    this->bestPrice=result.get()->getResults()[0].getPrice();
+                    this->path=result.get()->getResults()[0].getPath();
+
+                    ui->rent_pushButton->setDisabled(false);
+                } else {
+                    outputText = QString::fromStdString("No cars available");
+                    ui->rent_pushButton->setDisabled(true);
+
+                }
             } else {
-                outputText = QString::fromStdString("No cars available");
+                if (result.get()->getWaitTime() != std::numeric_limits<float>::max())
+                    outputText = QString::fromStdString("No cars available, waiting time: " + roundToTwoDecimals(result.get()->getWaitTime()));
+                else
+                    outputText = QString::fromStdString("There is no car that respects the requirements!");
                 ui->rent_pushButton->setDisabled(true);
 
             }
-        } else {
-            if (result.get()->getWaitTime() != std::numeric_limits<float>::max())
-                outputText = QString::fromStdString("No cars available, waiting time:" + roundToTwoDecimals(result.get()->getWaitTime()));
-            else
-                outputText = QString::fromStdString("There is no car that respects the requirements!");
-            ui->rent_pushButton->setDisabled(true);
 
+
+            if(outputText!=nullptr)
+                ui->output->setText(outputText);
+
+
+        }else{
+             ui->output->clear();
         }
-        ui->output->setText(outputText);
-
-
     }else{
+
         if(ui->passagers_spinBox->value()==0)
         {
             QMessageBox::critical(this, "RentItNow",
@@ -173,6 +194,7 @@ void UserRentForm::on_search_pushButton_clicked()
         ui->rent_pushButton->setDisabled(true);
 
     }
+
 }
 
 
@@ -192,10 +214,13 @@ void UserRentForm::on_rent_pushButton_clicked()
             connect( worker, &ThreadWorker::finished, worker, &ThreadWorker::deleteLater);
             connect( thread, &QThread::finished, thread, &QThread::deleteLater);
             thread->start();
+            if(bankValueLCD!=nullptr)
+                bankValueLCD->display(RentingService::getInstance().getMyBank()->getBalance());
             QMessageBox::information(this, "RentItNow",
-                                  "Operation completed",
-                                  QMessageBox::Ok,
-                                  QMessageBox::Ok);
+                                     "Operation completed",
+                                     QMessageBox::Ok,
+                                     QMessageBox::Ok);
+
 
         }else{
             QMessageBox::critical(this, "RentItNow",
@@ -203,6 +228,7 @@ void UserRentForm::on_rent_pushButton_clicked()
                                   QMessageBox::Ok,
                                   QMessageBox::Ok);
         }
+         ui->output->clear();
     }
 }
 

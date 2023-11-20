@@ -3,9 +3,22 @@
 #include "usermanagementservice.h"
 #include <limits>
 #include <QDebug>
+#include "../repository/bankrepository.h"
 RentingService::RentingService():city(SimpleTown::getInstance())
 {
-    this->myBank=std::make_unique<Bank>();
+
+    this->myBank=   BankRepository::getInstance().load();
+    if(this->myBank==nullptr)
+    {
+         this->myBank=   std::make_unique<Bank>();
+    }
+
+
+}
+
+RentingService::~RentingService()
+{
+    BankRepository::getInstance().save(this->myBank.get());
 }
 
 int RentingService::calculatePath(std::shared_ptr<Circle> position,const std::shared_ptr<Circle> from, const std::shared_ptr<Circle> destination, const bool taken=false)
@@ -107,9 +120,14 @@ std::unique_ptr<RentResearchResult> RentingService::requestRent( int passegers, 
         if(CarManagementService::getInstance().checkAviability(car->getLicensePlate()))
         {
             int distance=1+calculatePath(car->getLocation()->getPosition(),start.getPosition(),destination.getPosition());
+            if((distance*5)<=car->getKmBeforeService())
+            {
+                results.push_back(ResultItem(car,distance*5*car->getPrice(),distance, tmpPath));
+                tmpPath.clear();
+            }else{
+                waitTime=24;
+            }
 
-            results.push_back(ResultItem(car,distance*5*car->getPrice(),distance, tmpPath));
-            tmpPath.clear();
         }else{
 
             if(CarManagementService::getInstance().getMaintenanceTime(car->getLicensePlate())>0)
@@ -136,7 +154,7 @@ bool RentingService::rent(string lp, string dl, float price)
         if(CarManagementService::getInstance().checkAviability(lp))
         {
             this->myBank->deposit(price);
-
+ BankRepository::getInstance().save(this->myBank.get());
             car->setOwner(user);
 
             qDebug()<<"Payment completed";

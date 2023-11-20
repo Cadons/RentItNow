@@ -17,7 +17,7 @@ RentItNowMainWindow::RentItNowMainWindow(QWidget *parent)
     ui->actionUserManagment->setDisabled(true);
     on_actionI_m_User_triggered();
     QThread* thread = new QThread();
-    CarServiceWorker* carService = new CarServiceWorker();
+    CarServiceWorker* carService = new CarServiceWorker(ui->time_lcdNumber);
     carService->moveToThread(thread);
     connect( carService, &CarServiceWorker::error, this, [](){});
     connect( thread, &QThread::started, carService, &CarServiceWorker::process);
@@ -25,12 +25,22 @@ RentItNowMainWindow::RentItNowMainWindow(QWidget *parent)
     connect( carService, &CarServiceWorker::finished, carService, &CarServiceWorker::deleteLater);
     connect( thread, &QThread::finished, thread, &QThread::deleteLater);
     thread->start();
+    this->tick=thread;
 
 }
 
 RentItNowMainWindow::~RentItNowMainWindow()
 {
     delete ui;
+    CarServiceWorker::run=false;
+    tick->quit();
+    tick->wait();
+    delete tick;
+}
+
+void RentItNowMainWindow::updateBankValue(float v)
+{
+    ui->bank_lcdNumber->display(v);
 }
 
 
@@ -77,7 +87,7 @@ void RentItNowMainWindow::on_actionI_m_Boss_triggered()
     ui->actionUserManagment->setDisabled(false);
 
     ui->menuI_am->setTitle(QString("I am the Boss"));
-
+    on_actionCar_Managment_triggered();
 }
 
 
@@ -99,7 +109,7 @@ void RentItNowMainWindow::on_actionI_m_User_triggered()
 
     if(rentForm==nullptr)
     {
-        this->rentForm=std::make_unique<UserRentForm>(this);
+        this->rentForm=std::make_unique<UserRentForm>(ui->bank_lcdNumber,this);
 
         ui->verticalLayout->addWidget(this->rentForm.get());
     }

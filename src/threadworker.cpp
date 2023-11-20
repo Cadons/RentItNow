@@ -19,8 +19,10 @@ ThreadWorker::~ThreadWorker()
 void ThreadWorker::process()
 {
     // allocate resources using new here
-    qDebug("Getting the car");
-       QThread::sleep(10);
+    qDebug("Taking the car");
+
+    int time =  rand() % 10 + 5;
+       QThread::sleep(time);
     for(auto& loc : path )
        {
            CarManagementService::getInstance().moveCar(lp,loc);

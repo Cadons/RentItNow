@@ -5,17 +5,20 @@
 #include "../model/car.h"
 #include <map>
 #include <memory>
+#include <QMutex>
 #include "../model/location.h"
+#include "qlcdnumber.h"
 
 class CarManagementService: public ICarManager
 {
 private:
     CarManagementService();
+
     virtual ~CarManagementService();
 
     map<string,std::shared_ptr<Car>> myCars;
     map<string,int> carsInMaintaince;//this map composed by lp and time that remain before the end of service time
-
+    QMutex  mutex;
     bool verifyLicensePlate(const string lp);
 
 public:

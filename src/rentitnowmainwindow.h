@@ -17,7 +17,7 @@ class RentItNowMainWindow : public QMainWindow
 public:
     RentItNowMainWindow(QWidget *parent = nullptr);
     ~RentItNowMainWindow();
-
+    void updateBankValue(float v);
 private slots:
     void on_actionCar_Managment_triggered();
 
@@ -33,6 +33,7 @@ private:
     std::unique_ptr<CarManager> carManager=nullptr;
     std::unique_ptr<UserManager> userManager=nullptr;
     std::unique_ptr<UserRentForm> rentForm=nullptr;
+    QThread* tick;
 
     bool isBoss;
 };

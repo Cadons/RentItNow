@@ -1,6 +1,7 @@
 #include "carmanagementservice.h"
 #include "../repository/carsrepository.h"
 #include "../service/rentingservice.h"
+#include <mutex>
 CarManagementService &CarManagementService::getInstance()
 {
     static CarManagementService instance; // Guaranteed to be initialized only once.
@@ -137,14 +138,18 @@ int CarManagementService::getNextServiceTime(string lp)
 
 bool CarManagementService::putCarInMaintenance(string lp)
 {
+
     if(lp.empty())
         return false;
-
+    qDebug()<<lp+" in Maintenance";
     if(this->carsInMaintaince.count(lp)==0&&myCars.count(lp)>0&&myCars.at(lp)->needService())
     {
 
         if(RentingService::getInstance().getMyBank()->pay(300))
-        { this->carsInMaintaince[lp]=24;
+        {
+                mutex.lock();
+            this->carsInMaintaince[lp]=24;
+                mutex.unlock();
         return true;
         }else{
         return false;
@@ -153,20 +158,37 @@ bool CarManagementService::putCarInMaintenance(string lp)
     return false;
 
 }
-
 void CarManagementService::updateMaintenanceStatus()
 {
-    for (auto it = carsInMaintaince.begin(); it != carsInMaintaince.end(); ) {
-    // Update the value
-    it->second -= 1;
-
-    // Check if the updated value is 0, then remove the item
-    if (it->second == 0) {
-            it = carsInMaintaince.erase(it);
-    } else {
-            ++it;
-        }
+    //Check if there are cars that did not get enough money for the service and try to add new ones
+    for (const auto& it : myCars)
+    {
+      if(carsInMaintaince.count(it.first)==0)
+          if(it.second->needService())
+            putCarInMaintenance(it.first);
     }
+    mutex.lock();
+    for (auto it = carsInMaintaince.begin(); it != carsInMaintaince.end(); ) {
+      // Store the license plate before erasing the item
+      string licensePlate = it->first;
+
+      // Update the value
+      it->second -= 1;
+
+      // Check if the updated value is 0, then remove the item
+      if (it->second == 0) {
+        if (getCar(licensePlate) != nullptr) {
+                getCar(licensePlate)->resetKm();
+                qDebug() << licensePlate + " out of Maintenance";
+        }
+
+        // Erase the item using the stored iterator
+        it = carsInMaintaince.erase(it);
+      } else {
+        ++it;
+      }
+    }
+    mutex.unlock();
 }
 
 void CarManagementService::moveCar(string lp, Location& to)
@@ -214,5 +236,12 @@ CarManagementService::CarManagementService()
 
 CarManagementService::~CarManagementService()
 {
+    //Fast forwarding of service at the end of the simulation, in order to clean the list
+    for (int i = 0; i < 24; i++) {
+        this->updateMaintenanceStatus();
+    }
+    mutex.lock();
     CarsRepository::getInstance().save(myCars);
+  mutex.unlock();
+
 }
